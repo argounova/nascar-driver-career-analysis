@@ -1,0 +1,286 @@
+# NASCAR Driver Career Analysis Configuration
+# This file contains all project parameters and settings
+
+# ============================================================================
+# PROJECT METADATA
+# ============================================================================
+project:
+  name: "NASCAR Driver Career Analysis"
+  version: "1.0.0"
+  description: "Machine learning analysis of NASCAR driver performance clustering and career trajectory prediction"
+  author: "Craig Putzstuck"
+
+# ============================================================================
+# DATA CONFIGURATION
+# ============================================================================
+data:
+  # Data source and package information
+  source: "nascaR.data"
+  dataset: "cup_series"
+  
+  # Date ranges for analysis
+  date_range:
+    start_year: 1949        # First year in dataset
+    end_year: 2025          # Most recent year
+    analysis_start: 1990    # Start modern era analysis
+    training_start: 2000    # Start training data
+    training_end: 2024      # End training data
+    prediction_year: 2025   # Year to predict
+  
+  # Data filtering criteria
+  filtering:
+    min_races_per_season: 10    # Minimum races to include driver
+    min_seasons_for_career: 3   # Minimum seasons for career analysis
+    exclude_road_courses: false # Whether to exclude road courses
+    exclude_restrictor_plate: false # Whether to exclude superspeedways
+  
+  # Data quality settings
+  quality:
+    max_missing_percentage: 20  # Max % missing data allowed
+    outlier_threshold: 3        # Standard deviations for outlier detection
+
+# ============================================================================
+# FEATURE ENGINEERING
+# ============================================================================
+features:
+  # Core performance metrics to extract
+  career_metrics:
+    - "wins"
+    - "avg_finish"
+    - "top_5_rate"
+    - "top_10_rate"
+    - "dnf_rate"
+    - "laps_led"
+    - "driver_rating"
+    - "poles"
+    - "races_run"
+    - "total_points"
+  
+  # Derived features to calculate
+  derived_features:
+    - "consistency_score"      # Standard deviation of finishes
+    - "improvement_rate"       # Year-over-year improvement
+    - "peak_performance"       # Best 3-year average
+    - "career_stage"          # Early/Prime/Veteran classification
+    - "dominance_score"       # Wins + top-5s weighted
+  
+  # Rolling window calculations
+  rolling_windows:
+    short_term: 3    # 3-season rolling averages
+    medium_term: 5   # 5-season rolling averages
+    long_term: 10    # 10-season career averages
+  
+  # Career phase definitions
+  career_phases:
+    rookie_years: 3      # First 3 seasons
+    prime_start: 4       # When prime typically starts
+    prime_duration: 8    # Typical prime duration
+    veteran_threshold: 15 # Seasons to be veteran
+
+# ============================================================================
+# MACHINE LEARNING MODELS
+# ============================================================================
+models:
+  # LSTM Neural Network for Career Trajectory Prediction
+  lstm:
+    # Architecture parameters
+    sequence_length: 5        # Number of previous seasons to look at
+    hidden_units: [64, 32]    # Hidden layer sizes
+    dropout_rate: 0.2         # Dropout for regularization
+    recurrent_dropout: 0.2    # Recurrent dropout
+    
+    # Training parameters
+    epochs: 100               # Maximum training epochs
+    batch_size: 32            # Training batch size
+    learning_rate: 0.001      # Adam optimizer learning rate
+    validation_split: 0.2     # Validation data percentage
+    early_stopping_patience: 10 # Early stopping patience
+    
+    # Model compilation
+    loss_function: "mse"      # Mean squared error
+    optimizer: "adam"         # Adam optimizer
+    metrics: ["mae", "mse"]   # Metrics to track
+    
+    # Prediction targets
+    prediction_targets:
+      - "next_season_wins"
+      - "next_season_avg_finish"
+      - "career_peak_year"
+      - "total_career_wins"
+  
+  # K-Means Clustering for Driver Archetypes
+  clustering:
+    algorithm: "kmeans"       # Clustering algorithm
+    n_clusters: 6             # Number of driver archetypes
+    random_state: 42          # For reproducibility
+    init: "k-means++"         # Initialization method
+    n_init: 10                # Number of initialization runs
+    max_iter: 300             # Maximum iterations
+    
+    # Feature scaling
+    scale_features: true      # Whether to standardize features
+    scaler_type: "standard"   # StandardScaler or MinMaxScaler
+    
+    # Cluster validation
+    silhouette_analysis: true # Perform silhouette analysis
+    elbow_method: true        # Perform elbow method analysis
+    cluster_range: [2, 10]    # Range of clusters to test
+  
+  # Additional models for comparison
+  comparison_models:
+    random_forest:
+      n_estimators: 100
+      max_depth: 10
+      random_state: 42
+    
+    gradient_boosting:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 6
+
+# ============================================================================
+# VISUALIZATION SETTINGS
+# ============================================================================
+visualization:
+  # Plotly theme and styling
+  theme: "plotly_white"       # Plotly theme
+  template: "plotly_white"    # Template for consistency
+  
+  # Default figure dimensions
+  figure_size:
+    width: 1000               # Default width
+    height: 600               # Default height
+    dpi: 300                  # Resolution for exports
+  
+  # Color schemes
+  colors:
+    primary: "#FF6B35"        # NASCAR orange
+    secondary: "#1f77b4"      # Blue
+    accent: "#2ca02c"         # Green
+    warning: "#ff7f0e"        # Orange
+    danger: "#d62728"         # Red
+    
+    # Driver archetype colors
+    archetypes:
+      - "#FF6B35"  # Dominant Champions
+      - "#1f77b4"  # Consistent Contenders  
+      - "#2ca02c"  # Late Bloomers
+      - "#ff7f0e"  # Flashes in Pan
+      - "#d62728"  # Strugglers
+      - "#9467bd"  # Rookies/Unknowns
+  
+  # Chart-specific settings
+  charts:
+    career_trajectory:
+      line_width: 3
+      marker_size: 8
+      show_grid: true
+    
+    clustering:
+      marker_size: 10
+      opacity: 0.7
+      show_legend: true
+    
+    performance_heatmap:
+      colorscale: "Viridis"
+      show_colorbar: true
+
+# ============================================================================
+# FILE PATHS AND DIRECTORIES
+# ============================================================================
+paths:
+  # Data directories
+  raw_data: "data/raw/"
+  processed_data: "data/processed/"
+  
+  # Model directories
+  models: "data/models/"
+  model_checkpoints: "data/models/checkpoints/"
+  
+  # Output directories
+  outputs: "outputs/"
+  figures: "outputs/figures/"
+  reports: "outputs/reports/"
+  predictions: "outputs/predictions/"
+  
+  # Logging
+  logs: "logs/"
+
+# ============================================================================
+# LOGGING CONFIGURATION
+# ============================================================================
+logging:
+  level: "INFO"               # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_logging: true          # Whether to log to file
+  console_logging: true       # Whether to log to console
+  log_file: "logs/nascar_analysis.log"
+
+# ============================================================================
+# RUNTIME SETTINGS
+# ============================================================================
+runtime:
+  # Performance settings
+  random_seed: 42             # Global random seed
+  n_jobs: -1                  # Number of parallel jobs (-1 = all CPUs)
+  
+  # Memory management
+  chunk_size: 10000           # Size for processing large datasets
+  low_memory_mode: false      # Use low memory processing
+  
+  # GPU settings (if available)
+  use_gpu: true               # Whether to use GPU for TensorFlow
+  gpu_memory_growth: true     # Dynamic GPU memory allocation
+  
+  # Reproducibility
+  deterministic: true         # Ensure reproducible results
+
+# ============================================================================
+# DRIVER ARCHETYPE DEFINITIONS
+# ============================================================================
+archetypes:
+  names:
+    - "Dominant Champions"      # Multi-championship winners
+    - "Consistent Contenders"   # Regular top-10, few wins
+    - "Late Bloomers"          # Improved significantly over time
+    - "Flash in the Pan"       # Short-term success
+    - "Journeymen"             # Long careers, moderate success
+    - "Strugglers"             # Consistent back-of-pack
+  
+  characteristics:
+    dominant_champions:
+      min_wins_per_season: 2
+      min_top5_rate: 0.4
+      min_seasons: 5
+    
+    consistent_contenders:
+      max_wins_per_season: 1
+      min_top10_rate: 0.5
+      min_avg_finish: 15
+    
+    late_bloomers:
+      improvement_threshold: 5  # Positions improved
+      min_career_length: 8
+    
+    flash_in_pan:
+      peak_duration: 3         # Seasons of good performance
+      decline_threshold: 10    # Positions declined
+
+# ============================================================================
+# ANALYSIS SPECIFIC SETTINGS
+# ============================================================================
+analysis:
+  # Career peak detection
+  peak_detection:
+    window_size: 3            # Seasons to average for peak
+    min_peak_duration: 2      # Minimum peak duration
+  
+  # Trend analysis
+  trend_analysis:
+    min_trend_length: 4       # Minimum seasons for trend
+    significance_threshold: 0.05 # P-value threshold
+  
+  # Performance prediction
+  prediction:
+    forecast_horizon: 3       # Years ahead to predict
+    confidence_intervals: [0.1, 0.9] # 80% confidence interval
