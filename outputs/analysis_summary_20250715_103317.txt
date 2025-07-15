@@ -1,0 +1,92 @@
+NASCAR DRIVER CAREER ANALYSIS REPORT
+==================================================
+Generated: 2025-07-15 10:33:17
+Execution Time: 0.0 seconds
+
+DATA SUMMARY
+--------------------
+Raw Data:
+  Total Records: 99532
+  Seasons: 1949 - 2025
+  Unique Drivers: 3000
+  Total Races: 62
+
+Filtered Data:
+  Total Records: 99532
+  Seasons: 1949 - 2025
+  Unique Drivers: 3000
+
+Driver Seasons:
+  Total Driver Seasons: 3055
+  Unique Drivers: 531
+  Avg Races Per Season: 27.2
+
+FEATURE ENGINEERING SUMMARY
+------------------------------
+Total Features: 176
+Driver-Seasons: 3055
+Season Range: 1950-2025
+
+Feature Categories:
+  Original: 20
+  Rolling: 81
+  Trend: 25
+  Career Phase: 10
+  Peak: 6
+  Consistency: 16
+  Lag: 18
+
+DRIVER ARCHETYPE CLUSTERING
+------------------------------
+Number of Clusters: 6
+
+Journeymen:
+  Drivers: 54
+  Avg Wins/Season: 0.07
+  Avg Finish: 18.9
+  Top-5 Rate: 8.5%
+  Representatives: Elmo Langley, Paul Goldsmith, Wendell Scott
+
+Journeymen:
+  Drivers: 38
+  Avg Wins/Season: 1.43
+  Avg Finish: 16.1
+  Top-5 Rate: 23.3%
+  Representatives: Darrell Waltrip, Kyle Busch, Kevin Harvick
+
+Late Bloomers:
+  Drivers: 79
+  Avg Wins/Season: 0.06
+  Avg Finish: 22.4
+  Top-5 Rate: 2.9%
+  Representatives: Austin Dillon, Chris Buescher, Aric Almirola
+
+Dominant Champions:
+  Drivers: 21
+  Avg Wins/Season: 4.37
+  Avg Finish: 11.3
+  Top-5 Rate: 48.4%
+  Representatives: Richard Petty, David Pearson, Jeff Gordon
+
+Journeymen:
+  Drivers: 68
+  Avg Wins/Season: 0.10
+  Avg Finish: 24.8
+  Top-5 Rate: 3.1%
+  Representatives: Kyle Petty, Ken Schrader, Michael Waltrip
+
+Dominant Champions:
+  Drivers: 29
+  Avg Wins/Season: 1.26
+  Avg Finish: 14.4
+  Top-5 Rate: 31.0%
+  Representatives: Jim Paschal, Chase Elliott, Jack Smith
+
+LSTM CAREER PREDICTION MODEL
+-----------------------------------
+Training Sequences: 918
+Validation Sequences: 230
+Test Sequences: 288
+Sequence Length: 5 seasons
+Hidden Units: [64, 32]
+

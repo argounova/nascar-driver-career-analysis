@@ -1,0 +1,112 @@
+2025-07-15 10:32:43,824 - nascar_training - INFO - Training session started at 2025-07-15 10:32:43.824408
+2025-07-15 10:32:43,836 - nascar_training - INFO - Log file: logs/nascar_training_20250715_103243.log
+2025-07-15 10:32:43,836 - nascar_training - INFO - 🏁 STEP 1: Loading and validating NASCAR data
+2025-07-15 10:32:43,845 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:32:44,076 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:32:44,091 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:32:44,106 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:32:44,957 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:32:44,976 - nascar_training - INFO - 🔧 STEP 2: Advanced feature engineering
+2025-07-15 10:32:44,977 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:32:44,997 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:32:45,008 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:32:45,017 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:32:45,896 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:32:45,896 - data.feature_engineering - INFO - 🔧 Starting comprehensive feature engineering pipeline...
+2025-07-15 10:32:45,899 - data.feature_engineering - INFO - Creating rolling window features...
+2025-07-15 10:32:52,046 - data.feature_engineering - INFO - Added rolling features for 3 window sizes
+2025-07-15 10:32:52,058 - data.feature_engineering - INFO - Identifying career phases...
+2025-07-15 10:32:52,420 - data.feature_engineering - INFO - Career phases identified
+2025-07-15 10:32:52,420 - data.feature_engineering - INFO - Calculating performance trends...
+2025-07-15 10:32:54,827 - data.feature_engineering - INFO - Performance trends calculated
+2025-07-15 10:32:54,827 - data.feature_engineering - INFO - Detecting peak performance periods...
+2025-07-15 10:32:55,975 - data.feature_engineering - INFO - Peak performance detection completed
+2025-07-15 10:32:55,976 - data.feature_engineering - INFO - Calculating consistency metrics...
+2025-07-15 10:32:56,807 - data.feature_engineering - INFO - Consistency metrics calculated
+2025-07-15 10:32:56,808 - data.feature_engineering - INFO - Creating lag features for [1, 2, 3] seasons...
+2025-07-15 10:32:58,141 - data.feature_engineering - INFO - Lag features created
+2025-07-15 10:32:58,142 - data.feature_engineering - INFO - ✅ Feature engineering complete!
+2025-07-15 10:32:58,142 - data.feature_engineering - INFO -    Original features: 16
+2025-07-15 10:32:58,142 - data.feature_engineering - INFO -    Engineered features: 176
+2025-07-15 10:32:58,142 - data.feature_engineering - INFO -    Added features: 160
+2025-07-15 10:32:58,142 - data.feature_engineering - INFO - Creating LSTM sequences with length 5...
+2025-07-15 10:32:58,362 - data.feature_engineering - INFO - Created 1436 LSTM sequences for 186 drivers
+2025-07-15 10:32:58,414 - data.feature_engineering - INFO - LSTM sequences saved to data/processed/lstm_sequences.npz
+2025-07-15 10:32:58,415 - data.feature_engineering - INFO - Engineered features saved to data/processed/engineered_features.parquet
+2025-07-15 10:32:58,423 - nascar_training - INFO - 🏷️ STEP 3: Driver archetype clustering
+2025-07-15 10:32:58,423 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:32:58,456 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:32:58,469 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:32:58,478 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:32:59,322 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:32:59,322 - models.clustering - INFO - Preparing clustering features from driver seasons
+2025-07-15 10:32:59,507 - models.clustering - INFO - Prepared features for 289 drivers
+2025-07-15 10:32:59,517 - models.clustering - INFO - Selected 11 features for clustering
+2025-07-15 10:32:59,517 - models.clustering - INFO - Finding optimal number of clusters...
+2025-07-15 10:32:59,897 - models.clustering - INFO - Clusters: 2, Inertia: 2223.05, Silhouette: 0.320
+2025-07-15 10:32:59,926 - models.clustering - INFO - Clusters: 3, Inertia: 1902.40, Silhouette: 0.196
+2025-07-15 10:32:59,992 - models.clustering - INFO - Clusters: 4, Inertia: 1683.97, Silhouette: 0.196
+2025-07-15 10:33:00,038 - models.clustering - INFO - Clusters: 5, Inertia: 1503.29, Silhouette: 0.201
+2025-07-15 10:33:00,092 - models.clustering - INFO - Clusters: 6, Inertia: 1406.81, Silhouette: 0.194
+2025-07-15 10:33:00,203 - models.clustering - INFO - Clusters: 7, Inertia: 1302.13, Silhouette: 0.215
+2025-07-15 10:33:00,270 - models.clustering - INFO - Clusters: 8, Inertia: 1206.46, Silhouette: 0.218
+2025-07-15 10:33:00,454 - models.clustering - INFO - Clusters: 9, Inertia: 1135.42, Silhouette: 0.200
+2025-07-15 10:33:00,577 - models.clustering - INFO - Clusters: 10, Inertia: 1072.13, Silhouette: 0.195
+2025-07-15 10:33:00,578 - models.clustering - INFO - Optimal clusters - Silhouette: 2, Elbow: 5, Config: 6
+2025-07-15 10:33:00,578 - models.clustering - INFO - Fitting K-means with 6 clusters
+2025-07-15 10:33:00,743 - models.clustering - INFO - Final model - Inertia: 1406.81, Silhouette: 0.194
+2025-07-15 10:33:00,816 - models.clustering - INFO - Clustering results saved to data/models/driver_clustering_model.pkl
+2025-07-15 10:33:00,817 - models.clustering - INFO - Driver assignments saved to data/processed/driver_archetypes.parquet
+2025-07-15 10:33:00,817 - models.clustering - INFO - Cluster analysis saved to data/processed/cluster_analysis.parquet
+2025-07-15 10:33:00,837 - nascar_training - INFO - 🧠 STEP 4: LSTM career trajectory prediction
+2025-07-15 10:33:00,837 - models.lstm_model - INFO - TensorFlow version: 2.17.0
+2025-07-15 10:33:00,842 - models.lstm_model - INFO - Using import style: 2.x
+2025-07-15 10:33:00,894 - models.lstm_model - INFO - No GPUs found, using CPU
+2025-07-15 10:33:00,895 - models.lstm_model - INFO - Loaded 1436 sequences with shape (1436, 5, 17)
+2025-07-15 10:33:00,895 - models.lstm_model - INFO - Preparing prediction targets...
+2025-07-15 10:33:01,702 - models.lstm_model - INFO - Prepared 8 prediction targets
+2025-07-15 10:33:01,703 - models.lstm_model - INFO - Preprocessing data for LSTM training...
+2025-07-15 10:33:01,707 - models.lstm_model - INFO - Data split - Train: 918, Val: 230, Test: 288
+2025-07-15 10:33:01,707 - models.lstm_model - INFO - Building LSTM model architecture...
+2025-07-15 10:33:01,916 - models.lstm_model - INFO - Model architecture:
+2025-07-15 10:33:01,920 - models.lstm_model - INFO - Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ lstm_1 (LSTM)                        │ (None, 5, 64)               │          20,992 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_norm_1 (BatchNormalization)    │ (None, 5, 64)               │             256 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ lstm_2 (LSTM)                        │ (None, 32)                  │          12,416 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_norm_2 (BatchNormalization)    │ (None, 32)                  │             128 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 16)                  │             528 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_final (Dropout)              │ (None, 16)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ output (Dense)                       │ (None, 8)                   │             136 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 34,456 (134.59 KB)
+ Trainable params: 34,264 (133.84 KB)
+ Non-trainable params: 192 (768.00 B)
+
+2025-07-15 10:33:01,920 - models.lstm_model - INFO - Starting LSTM model training...
+2025-07-15 10:33:17,690 - models.lstm_model - INFO - Training completed!
+2025-07-15 10:33:17,715 - models.lstm_model - INFO - Model saved to data/models/lstm_career_predictor.keras
+2025-07-15 10:33:17,715 - models.lstm_model - INFO - Preprocessors saved to data/models/lstm_preprocessors.pkl
+2025-07-15 10:33:17,715 - nascar_training - INFO - 📈 STEP 5: Model evaluation and examples
+2025-07-15 10:33:17,715 - nascar_training - INFO - 💾 STEP 6: Exporting results and reports
+2025-07-15 10:33:17,724 - models.lstm_model - INFO - Evaluating model on test data...
+2025-07-15 10:33:17,910 - models.lstm_model - INFO - Evaluation Results:
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   next_avg_finish: MAE=2.565, R²=0.721
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   next_win_rate: MAE=0.037, R²=0.627
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   next_top5_rate: MAE=0.078, R²=0.753
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   next_top10_rate: MAE=0.096, R²=0.691
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   performance_score: MAE=0.182, R²=0.352
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   seasons_to_peak: MAE=1.501, R²=0.280
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   career_progress: MAE=0.057, R²=0.848
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   peak_timing: MAE=0.189, R²=0.344
+2025-07-15 10:33:17,911 - models.lstm_model - INFO -   Overall: MAE=0.588
+2025-07-15 10:33:17,928 - nascar_training - INFO - Analysis pipeline completed successfully in 34.1 seconds
+2025-07-15 10:33:17,928 - nascar_training - INFO - Pipeline completed successfully

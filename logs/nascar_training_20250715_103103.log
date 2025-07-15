@@ -1,0 +1,71 @@
+2025-07-15 10:31:03,001 - nascar_training - INFO - Training session started at 2025-07-15 10:31:03.001397
+2025-07-15 10:31:03,013 - nascar_training - INFO - Log file: logs/nascar_training_20250715_103103.log
+2025-07-15 10:31:03,013 - nascar_training - INFO - 🏁 STEP 1: Loading and validating NASCAR data
+2025-07-15 10:31:03,021 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:31:03,232 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:31:03,250 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:31:03,281 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:31:04,168 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:31:04,189 - nascar_training - INFO - 🔧 STEP 2: Advanced feature engineering
+2025-07-15 10:31:04,189 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:31:04,213 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:31:04,225 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:31:04,233 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:31:05,095 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:31:05,095 - data.feature_engineering - INFO - 🔧 Starting comprehensive feature engineering pipeline...
+2025-07-15 10:31:05,106 - data.feature_engineering - INFO - Creating rolling window features...
+2025-07-15 10:31:11,519 - data.feature_engineering - INFO - Added rolling features for 3 window sizes
+2025-07-15 10:31:11,531 - data.feature_engineering - INFO - Identifying career phases...
+2025-07-15 10:31:11,894 - data.feature_engineering - INFO - Career phases identified
+2025-07-15 10:31:11,894 - data.feature_engineering - INFO - Calculating performance trends...
+2025-07-15 10:31:14,341 - data.feature_engineering - INFO - Performance trends calculated
+2025-07-15 10:31:14,341 - data.feature_engineering - INFO - Detecting peak performance periods...
+2025-07-15 10:31:15,460 - data.feature_engineering - INFO - Peak performance detection completed
+2025-07-15 10:31:15,460 - data.feature_engineering - INFO - Calculating consistency metrics...
+2025-07-15 10:31:16,308 - data.feature_engineering - INFO - Consistency metrics calculated
+2025-07-15 10:31:16,308 - data.feature_engineering - INFO - Creating lag features for [1, 2, 3] seasons...
+2025-07-15 10:31:17,645 - data.feature_engineering - INFO - Lag features created
+2025-07-15 10:31:17,645 - data.feature_engineering - INFO - ✅ Feature engineering complete!
+2025-07-15 10:31:17,645 - data.feature_engineering - INFO -    Original features: 16
+2025-07-15 10:31:17,646 - data.feature_engineering - INFO -    Engineered features: 176
+2025-07-15 10:31:17,646 - data.feature_engineering - INFO -    Added features: 160
+2025-07-15 10:31:17,646 - data.feature_engineering - INFO - Creating LSTM sequences with length 5...
+2025-07-15 10:31:17,865 - data.feature_engineering - INFO - Created 1436 LSTM sequences for 186 drivers
+2025-07-15 10:31:17,920 - data.feature_engineering - INFO - LSTM sequences saved to data/processed/lstm_sequences.npz
+2025-07-15 10:31:17,920 - data.feature_engineering - INFO - Engineered features saved to data/processed/engineered_features.parquet
+2025-07-15 10:31:17,937 - nascar_training - INFO - 🏷️ STEP 3: Driver archetype clustering
+2025-07-15 10:31:17,938 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-07-15 10:31:17,967 - data.data_loader - INFO - Loaded 99532 records from 1949 to 2025
+2025-07-15 10:31:17,980 - data.data_loader - INFO - Date filtering: 99532 -> 99532 records
+2025-07-15 10:31:17,992 - data.data_loader - INFO - Missing data removal: 99532 -> 99532 records
+2025-07-15 10:31:18,836 - data.data_loader - INFO - Created season summaries for 3055 driver-seasons
+2025-07-15 10:31:18,836 - models.clustering - INFO - Preparing clustering features from driver seasons
+2025-07-15 10:31:19,031 - models.clustering - INFO - Prepared features for 289 drivers
+2025-07-15 10:31:19,036 - models.clustering - INFO - Selected 11 features for clustering
+2025-07-15 10:31:19,036 - models.clustering - INFO - Finding optimal number of clusters...
+2025-07-15 10:31:19,367 - models.clustering - INFO - Clusters: 2, Inertia: 2223.05, Silhouette: 0.320
+2025-07-15 10:31:19,405 - models.clustering - INFO - Clusters: 3, Inertia: 1902.40, Silhouette: 0.196
+2025-07-15 10:31:19,517 - models.clustering - INFO - Clusters: 4, Inertia: 1683.97, Silhouette: 0.196
+2025-07-15 10:31:19,615 - models.clustering - INFO - Clusters: 5, Inertia: 1503.29, Silhouette: 0.201
+2025-07-15 10:31:19,663 - models.clustering - INFO - Clusters: 6, Inertia: 1406.81, Silhouette: 0.194
+2025-07-15 10:31:19,728 - models.clustering - INFO - Clusters: 7, Inertia: 1302.13, Silhouette: 0.215
+2025-07-15 10:31:19,859 - models.clustering - INFO - Clusters: 8, Inertia: 1206.46, Silhouette: 0.218
+2025-07-15 10:31:19,939 - models.clustering - INFO - Clusters: 9, Inertia: 1135.42, Silhouette: 0.200
+2025-07-15 10:31:20,057 - models.clustering - INFO - Clusters: 10, Inertia: 1072.13, Silhouette: 0.195
+2025-07-15 10:31:20,057 - models.clustering - INFO - Optimal clusters - Silhouette: 2, Elbow: 5, Config: 6
+2025-07-15 10:31:20,057 - models.clustering - INFO - Fitting K-means with 6 clusters
+2025-07-15 10:31:20,190 - models.clustering - INFO - Final model - Inertia: 1406.81, Silhouette: 0.194
+2025-07-15 10:31:20,224 - models.clustering - INFO - Clustering results saved to data/models/driver_clustering_model.pkl
+2025-07-15 10:31:20,224 - models.clustering - INFO - Driver assignments saved to data/processed/driver_archetypes.parquet
+2025-07-15 10:31:20,224 - models.clustering - INFO - Cluster analysis saved to data/processed/cluster_analysis.parquet
+2025-07-15 10:31:20,230 - nascar_training - INFO - 🧠 STEP 4: LSTM career trajectory prediction
+2025-07-15 10:31:20,231 - models.lstm_model - INFO - TensorFlow version: 2.17.0
+2025-07-15 10:31:20,231 - models.lstm_model - INFO - Using import style: 2.x
+2025-07-15 10:31:20,235 - models.lstm_model - INFO - No GPUs found, using CPU
+2025-07-15 10:31:20,235 - nascar_training - ERROR - Pipeline failed at step: name 'engineer' is not defined
+Traceback (most recent call last):
+  File "/Volumes/Macintosh Mini HD/Repositories/nascar-driver-career-analysis/scripts/train_models.py", line 240, in run_complete_analysis
+    sequences, targets, driver_names = engineer.lstm_sequences
+                                       ^^^^^^^^
+NameError: name 'engineer' is not defined
+2025-07-15 10:31:20,239 - nascar_training - ERROR - Pipeline failed: Pipeline failed at step: name 'engineer' is not defined
