@@ -415,7 +415,7 @@ class NASCARLSTMPredictor:
         ]
         
         # Model checkpoint
-        checkpoint_path = Path(self.paths['models']) / 'lstm_best_model.h5'
+        checkpoint_path = Path(self.paths['models']) / 'lstm_best_model.keras'
         checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
         
         callbacks_list.append(ModelCheckpoint(
@@ -537,7 +537,7 @@ class NASCARLSTMPredictor:
             raise ValueError("No model to save")
         
         # Save model
-        model_path = Path(self.paths['models']) / 'lstm_career_predictor.h5'
+        model_path = Path(self.paths['models']) / 'lstm_career_predictor.keras'
         self.model.save(str(model_path))
         
         # Save preprocessing components

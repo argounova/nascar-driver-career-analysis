@@ -1,0 +1,10 @@
+{
+  "update_time": "2025-07-15 09:38:02.724032",
+  "update_date": "2025-07-15",
+  "total_records": 99532,
+  "seasons_covered": "1949 - 2025",
+  "unique_drivers": 3000,
+  "r_version": "R version 4.4.2 (2024-10-31)",
+  "package_source": "kyleGrealis/nascaR.data",
+  "export_format": "parquet"
+}
