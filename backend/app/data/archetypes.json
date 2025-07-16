@@ -1,8 +1,8 @@
 {
   "archetypes": [
     {
-      "id": "journeymen",
-      "name": "Journeymen",
+      "id": "mid-pack-drivers",
+      "name": "Mid-Pack Drivers",
       "color": "#FF6B35",
       "driver_count": 54,
       "characteristics": {
@@ -20,11 +20,11 @@
         "Elmo Langley",
         "Tom Pistone"
       ],
-      "description": "Long-career drivers with moderate success. The backbone of NASCAR competition."
+      "description": "Drivers who typically finish in the middle of the field. Solid contributors to the sport."
     },
     {
-      "id": "journeymen",
-      "name": "Journeymen",
+      "id": "race-winners",
+      "name": "Race Winners",
       "color": "#1f77b4",
       "driver_count": 38,
       "characteristics": {
@@ -42,11 +42,11 @@
         "Denny Hamlin",
         "Rusty Wallace"
       ],
-      "description": "Long-career drivers with moderate success. The backbone of NASCAR competition."
+      "description": "Drivers who regularly win races and compete for championships. Solid performers with proven winning ability."
     },
     {
-      "id": "late-bloomers",
-      "name": "Late Bloomers",
+      "id": "backfield-runners",
+      "name": "Backfield Runners",
       "color": "#2ca02c",
       "driver_count": 79,
       "characteristics": {
@@ -64,11 +64,11 @@
         "Brian Vickers",
         "Chase Briscoe"
       ],
-      "description": "Drivers who showed significant improvement over their careers, often reaching peak performance later."
+      "description": "Drivers who consistently ran in the back of the field throughout their careers."
     },
     {
-      "id": "dominant-champions",
-      "name": "Dominant Champions",
+      "id": "elite-champions",
+      "name": "Elite Champions",
       "color": "#ff7f0e",
       "driver_count": 21,
       "characteristics": {
@@ -86,11 +86,11 @@
         "Bobby Allison",
         "Cale Yarborough"
       ],
-      "description": "Elite drivers with multiple wins per season and consistent top-5 finishes. These are the championship contenders."
+      "description": "The absolute best drivers in NASCAR history. Multiple wins per season and consistent championship contenders."
     },
     {
-      "id": "journeymen",
-      "name": "Journeymen",
+      "id": "veteran-journeymen",
+      "name": "Veteran Journeymen",
       "color": "#d62728",
       "driver_count": 68,
       "characteristics": {
@@ -108,11 +108,11 @@
         "Bobby Hamilton",
         "Joe Nemechek"
       ],
-      "description": "Long-career drivers with moderate success. The backbone of NASCAR competition."
+      "description": "Long-career drivers with moderate success. The experienced backbone of NASCAR competition."
     },
     {
-      "id": "dominant-champions",
-      "name": "Dominant Champions",
+      "id": "consistent-contenders",
+      "name": "Consistent Contenders",
       "color": "#9467bd",
       "driver_count": 29,
       "characteristics": {
@@ -130,7 +130,7 @@
         "Davey Allison",
         "Neil Bonnett"
       ],
-      "description": "Elite drivers with multiple wins per season and consistent top-5 finishes. These are the championship contenders."
+      "description": "Reliable drivers who regularly finish in the top-10 with occasional wins. Solid performers you can count on."
     }
   ],
   "driver_archetypes": {
@@ -1586,5 +1586,5 @@
     "algorithm": "K-Means",
     "features_used": 11
   },
-  "export_timestamp": "2025-07-16T11:08:06.862200"
+  "export_timestamp": "2025-07-16T11:51:53.747627"
 }

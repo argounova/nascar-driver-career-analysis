@@ -151,7 +151,9 @@ def export_archetypes_data() -> Dict[str, Any]:
         ))
         career_data['archetype'] = career_data['cluster'].map(cluster_archetype_map)
         
-        # Create archetype summaries
+        # Create archetype summaries with reassigned names
+        cluster_analysis = reassign_archetypes(cluster_analysis)
+        
         archetypes = []
         for idx, row in cluster_analysis.iterrows():
             # Get drivers in this archetype
@@ -213,14 +215,60 @@ def export_archetypes_data() -> Dict[str, Any]:
         }
 
 
+def reassign_archetypes(cluster_analysis: pd.DataFrame) -> pd.DataFrame:
+    """Reassign archetype names to ensure 6 unique, meaningful categories."""
+    
+    # Sort by performance metrics to assign better names
+    cluster_analysis_sorted = cluster_analysis.sort_values(['avg_wins_per_season', 'avg_top5_rate'], ascending=False)
+    
+    # Define 6 distinct archetype names (one for each cluster)
+    archetype_names = [
+        "Elite Champions",        # Best overall performers
+        "Race Winners",          # Regular win contenders  
+        "Consistent Contenders", # Top-10 regulars
+        "Veteran Journeymen",    # Long careers, moderate success
+        "Mid-Pack Drivers",      # Middle of the field
+        "Backfield Runners"      # Back of the pack
+    ]
+    
+    # Assign names in performance order (best to worst)
+    new_archetypes = []
+    
+    for idx, (cluster_idx, row) in enumerate(cluster_analysis_sorted.iterrows()):
+        # Simply assign the names in order of performance
+        if idx < len(archetype_names):
+            archetype = archetype_names[idx]
+        else:
+            # Fallback if somehow we have more than 6 clusters
+            archetype = f"Group {idx + 1}"
+        
+        new_archetypes.append(archetype)
+        
+        # Debug info
+        wins_per_season = row['avg_wins_per_season']
+        avg_finish = row['avg_finish']
+        top5_rate = row['avg_top5_rate']
+        print(f"Cluster {cluster_idx}: {archetype} - {wins_per_season:.2f} wins/season, {avg_finish:.1f} avg finish, {top5_rate:.1%} top-5")
+    
+    # Update the original dataframe with new names
+    name_mapping = dict(zip(cluster_analysis_sorted.index, new_archetypes))
+    cluster_analysis_copy = cluster_analysis.copy()
+    cluster_analysis_copy['archetype'] = cluster_analysis_copy.index.map(name_mapping)
+    
+    return cluster_analysis_copy
+
+
 def get_archetype_description(archetype_name: str) -> str:
     """Get human-readable description for archetype."""
     descriptions = {
-        'Dominant Champions': 'Elite drivers with multiple wins per season and consistent top-5 finishes. These are the championship contenders.',
+        'Elite Champions': 'The absolute best drivers in NASCAR history. Multiple wins per season and consistent championship contenders.',
+        'Race Winners': 'Drivers who regularly win races and compete for championships. Solid performers with proven winning ability.',
         'Consistent Contenders': 'Reliable drivers who regularly finish in the top-10 with occasional wins. Solid performers you can count on.',
+        'Veteran Journeymen': 'Long-career drivers with moderate success. The experienced backbone of NASCAR competition.',
+        'Mid-Pack Drivers': 'Drivers who typically finish in the middle of the field. Solid contributors to the sport.',
+        'Backfield Runners': 'Drivers who consistently ran in the back of the field throughout their careers.',
         'Late Bloomers': 'Drivers who showed significant improvement over their careers, often reaching peak performance later.',
         'Flash in the Pan': 'Drivers with short but impressive peak performance periods before declining or retiring.',
-        'Journeymen': 'Long-career drivers with moderate success. The backbone of NASCAR competition.',
         'Strugglers': 'Drivers who consistently ran in the back of the field throughout their careers.'
     }
     return descriptions.get(archetype_name, 'A distinct group of NASCAR drivers with similar career patterns.')
