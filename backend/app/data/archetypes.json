@@ -1,1590 +1,187 @@
 {
   "archetypes": [
     {
-      "id": "mid-pack-drivers",
-      "name": "Mid-Pack Drivers",
-      "color": "#FF6B35",
-      "driver_count": 54,
-      "characteristics": {
-        "avg_wins_per_season": 0.073,
-        "avg_finish": 18.884,
-        "avg_top5_rate": 0.085,
-        "avg_win_rate": 0.004,
-        "avg_seasons": 5.852
-      },
-      "representative_drivers": "Elmo Langley, Paul Goldsmith, Wendell Scott",
-      "top_drivers": [
-        "Paul Goldsmith",
-        "Bill Blair",
-        "Bobby Johns",
-        "Elmo Langley",
-        "Tom Pistone"
-      ],
-      "description": "Drivers who typically finish in the middle of the field. Solid contributors to the sport."
-    },
-    {
-      "id": "race-winners",
-      "name": "Race Winners",
-      "color": "#1f77b4",
-      "driver_count": 38,
-      "characteristics": {
-        "avg_wins_per_season": 1.433,
-        "avg_finish": 16.078,
-        "avg_top5_rate": 0.233,
-        "avg_win_rate": 0.044,
-        "avg_seasons": 19.579
-      },
-      "representative_drivers": "Darrell Waltrip, Kyle Busch, Kevin Harvick",
-      "top_drivers": [
-        "Darrell Waltrip",
-        "Kyle Busch",
-        "Kevin Harvick",
-        "Denny Hamlin",
-        "Rusty Wallace"
-      ],
-      "description": "Drivers who regularly win races and compete for championships. Solid performers with proven winning ability."
-    },
-    {
-      "id": "backfield-runners",
-      "name": "Backfield Runners",
-      "color": "#2ca02c",
-      "driver_count": 79,
-      "characteristics": {
-        "avg_wins_per_season": 0.056,
-        "avg_finish": 22.398,
-        "avg_top5_rate": 0.029,
-        "avg_win_rate": 0.002,
-        "avg_seasons": 5.747
-      },
-      "representative_drivers": "Austin Dillon, Chris Buescher, Aric Almirola",
-      "top_drivers": [
-        "Chris Buescher",
-        "Austin Dillon",
-        "Aric Almirola",
-        "Brian Vickers",
-        "Chase Briscoe"
-      ],
-      "description": "Drivers who consistently ran in the back of the field throughout their careers."
-    },
-    {
-      "id": "elite-champions",
-      "name": "Elite Champions",
-      "color": "#ff7f0e",
-      "driver_count": 21,
-      "characteristics": {
-        "avg_wins_per_season": 4.366,
-        "avg_finish": 11.293,
-        "avg_top5_rate": 0.484,
-        "avg_win_rate": 0.147,
-        "avg_seasons": 13.286
-      },
-      "representative_drivers": "Richard Petty, David Pearson, Jeff Gordon",
-      "top_drivers": [
-        "Richard Petty",
-        "David Pearson",
-        "Jeff Gordon",
-        "Bobby Allison",
-        "Cale Yarborough"
-      ],
-      "description": "The absolute best drivers in NASCAR history. Multiple wins per season and consistent championship contenders."
-    },
-    {
       "id": "veteran-journeymen",
       "name": "Veteran Journeymen",
-      "color": "#d62728",
-      "driver_count": 68,
+      "color": "#FF6B35",
+      "driver_count": 2,
       "characteristics": {
-        "avg_wins_per_season": 0.097,
-        "avg_finish": 24.795,
-        "avg_top5_rate": 0.031,
-        "avg_win_rate": 0.003,
-        "avg_seasons": 10.824
+        "avg_wins_per_season": 3.038,
+        "avg_finish": 14.683,
+        "avg_top5_rate": 0.18,
+        "avg_win_rate": 0.084,
+        "avg_seasons": 26.0
       },
-      "representative_drivers": "Kyle Petty, Ken Schrader, Michael Waltrip",
+      "representative_drivers": "Tyler Reddick, Kyle Busch",
       "top_drivers": [
-        "Kyle Petty",
-        "Jeremy Mayfield",
-        "Ward Burton",
-        "Bobby Hamilton",
-        "Joe Nemechek"
+        "Tyler Reddick",
+        "Kyle Busch"
       ],
       "description": "Long-career drivers with moderate success. The experienced backbone of NASCAR competition."
     },
     {
       "id": "consistent-contenders",
       "name": "Consistent Contenders",
-      "color": "#9467bd",
-      "driver_count": 29,
+      "color": "#1f77b4",
+      "driver_count": 3,
       "characteristics": {
-        "avg_wins_per_season": 1.256,
-        "avg_finish": 14.386,
-        "avg_top5_rate": 0.31,
-        "avg_win_rate": 0.057,
-        "avg_seasons": 7.655
+        "avg_wins_per_season": 3.256,
+        "avg_finish": 14.985,
+        "avg_top5_rate": 0.181,
+        "avg_win_rate": 0.09,
+        "avg_seasons": 26.0
       },
-      "representative_drivers": "Jim Paschal, Chase Elliott, Jack Smith",
+      "representative_drivers": "Christopher Bell, Chase Elliott, Ryan Blaney",
       "top_drivers": [
-        "Jim Paschal",
-        "Jack Smith",
+        "Christopher Bell",
         "Chase Elliott",
-        "Davey Allison",
-        "Neil Bonnett"
+        "Ryan Blaney"
       ],
       "description": "Reliable drivers who regularly finish in the top-10 with occasional wins. Solid performers you can count on."
+    },
+    {
+      "id": "race-winners",
+      "name": "Race Winners",
+      "color": "#2ca02c",
+      "driver_count": 3,
+      "characteristics": {
+        "avg_wins_per_season": 3.346,
+        "avg_finish": 14.73,
+        "avg_top5_rate": 0.184,
+        "avg_win_rate": 0.093,
+        "avg_seasons": 26.0
+      },
+      "representative_drivers": "Martin Truex Jr., Joey Logano, Kyle Larson",
+      "top_drivers": [
+        "Martin Truex Jr.",
+        "Joey Logano",
+        "Kyle Larson"
+      ],
+      "description": "Drivers who regularly win races and compete for championships. Solid performers with proven winning ability."
+    },
+    {
+      "id": "backfield-runners",
+      "name": "Backfield Runners",
+      "color": "#ff7f0e",
+      "driver_count": 2,
+      "characteristics": {
+        "avg_wins_per_season": 2.673,
+        "avg_finish": 15.271,
+        "avg_top5_rate": 0.162,
+        "avg_win_rate": 0.074,
+        "avg_seasons": 26.0
+      },
+      "representative_drivers": "Kevin Harvick, Brad Keselowski",
+      "top_drivers": [
+        "Kevin Harvick",
+        "Brad Keselowski"
+      ],
+      "description": "Drivers who consistently ran in the back of the field throughout their careers."
+    },
+    {
+      "id": "mid-pack-drivers",
+      "name": "Mid-Pack Drivers",
+      "color": "#d62728",
+      "driver_count": 1,
+      "characteristics": {
+        "avg_wins_per_season": 3.0,
+        "avg_finish": 14.67,
+        "avg_top5_rate": 0.156,
+        "avg_win_rate": 0.083,
+        "avg_seasons": 26.0
+      },
+      "representative_drivers": "Denny Hamlin",
+      "top_drivers": [
+        "Denny Hamlin"
+      ],
+      "description": "Drivers who typically finish in the middle of the field. Solid contributors to the sport."
+    },
+    {
+      "id": "elite-champions",
+      "name": "Elite Champions",
+      "color": "#9467bd",
+      "driver_count": 1,
+      "characteristics": {
+        "avg_wins_per_season": 3.615,
+        "avg_finish": 14.593,
+        "avg_top5_rate": 0.198,
+        "avg_win_rate": 0.1,
+        "avg_seasons": 26.0
+      },
+      "representative_drivers": "William Byron",
+      "top_drivers": [
+        "William Byron"
+      ],
+      "description": "The absolute best drivers in NASCAR history. Multiple wins per season and consistent championship contenders."
     }
   ],
   "driver_archetypes": {
-    "aj-allmendinger": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "alan-kulwicki": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "alex-bowman": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "arden-mounts": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "aric-almirola": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "austin-cindric": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "austin-dillon": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "bj-mcleod": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "baxter-price": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ben-arnold": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "benny-parsons": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "bill-blair": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bill-champion": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bill-dennis": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bill-elliott": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "bill-seifert": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bill-shirey": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "billy-carden": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "blackie-pitt": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bob-cooper": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bob-derrington": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bob-welborn": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "bobby-allison": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "bobby-hamilton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "bobby-hamilton-jr": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "bobby-hillin-jr": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "bobby-isaac": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "bobby-johns": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bobby-keck": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "bobby-labonte": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "bobby-wawak": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
     "brad-keselowski": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "brett-bodine": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "brian-vickers": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "brownie-king": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "bruce-hill": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "bubba-wallace": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "buck-baker": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
       "cluster_id": 3
-    },
-    "buddy-arrington": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "buddy-baker": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "bunkie-blackburn": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "cale-yarborough": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "carl-edwards": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "casey-mears": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "cecil-gordon": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "chad-little": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "charlie-glotzbach": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "charlie-roberts": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "chase-briscoe": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
     },
     "chase-elliott": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "chris-buescher": {
       "archetype_id": "late-bloomers",
       "archetype_name": "Late Bloomers",
-      "cluster_id": 2
+      "cluster_id": 1
     },
     "christopher-bell": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "clint-bowyer": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
+      "archetype_id": "late-bloomers",
+      "archetype_name": "Late Bloomers",
       "cluster_id": 1
-    },
-    "clyde-lynn": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "cody-ware": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "cole-custer": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "cole-whitt": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "coo-coo-marlin": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "corey-lajoie": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "cotton-owens": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "curtis-crider": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "curtis-turner": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "dk-ulrich": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "dale-earnhardt": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "dale-earnhardt-jr": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "dale-jarrett": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "danica-patrick": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "daniel-suarez": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "darel-dieringer": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "darrell-waltrip": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "dave-blaney": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "dave-marcis": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "davey-allison": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "david-gilliland": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "david-green": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "david-pearson": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "david-ragan": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "david-reutimann": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "david-sisco": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "david-stremme": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "dean-dalton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
     },
     "denny-hamlin": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "derrike-cope": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
       "cluster_id": 4
-    },
-    "dick-brooks": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "dick-hutcherson": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "dick-johnson-california": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "dick-may": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "dick-rathman": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "dick-trickle": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "don-tarr": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "donald-thomas": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "donnie-allison": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "doug-cooper": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "doug-yates": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ej-trivette": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "earl-brooks": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ed-livingston": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ed-negre": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "eddie-bierschwale": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "elliott-sadler": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "elmo-langley": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "emanuel-zervakis": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "erik-jones": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "ernie-irvan": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "ferrel-harris": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "fireball-roberts": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "fonty-flock": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "frank-warren": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "fred-harb": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "fred-lorenzen": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "friday-hassler": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "gc-spencer": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "garrett-smithley": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "gary-myers": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "geoff-bodine": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "george-green": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "gober-sosebee": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "grant-adcox": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "greg-biffle": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "greg-sacks": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "gwyn-staley": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "harrison-burton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "harry-gant": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "henley-gray": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "herb-thomas": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "herman-beam": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "hermie-sadler": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "hut-stricklin": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jd-mcduffie": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jj-yeley": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jt-putney": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "jabe-thomas": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jack-smith": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "james-hylton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "jamie-mcmurray": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "jason-leffler": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jeff-burton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "jeff-gordon": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "jeff-green": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jeffrey-earnhardt": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jeremy-mayfield": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jerry-nadeau": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jim-paschal": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "jim-reed": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "jim-vandiver": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jimmie-johnson": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "jimmie-lewallen": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "jimmy-helms": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jimmy-hensley": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jimmy-means": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jimmy-pardue": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "jimmy-spencer": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "jody-ridley": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "joe-eubanks": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "joe-frasson": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "joe-millikan": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "joe-nemechek": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "joe-ruttman": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "joe-weatherly": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "joey-gase": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
     },
     "joey-logano": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "john-andretti": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "john-hunter-nemechek": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
       "cluster_id": 2
-    },
-    "john-sears": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "johnny-allen": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "johnny-benson-jr": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "johnny-sauter": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "josh-berry": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "josh-bilicki": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "josh-wise": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "juan-pablo-montoya": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "junior-johnson": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "justin-haley": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "kasey-kahne": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "ken-meisenhelder": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ken-rush": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ken-schrader": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "kenny-irwin-jr": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "kenny-wallace": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
     },
     "kevin-harvick": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "kevin-lepage": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "kurt-busch": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
+      "cluster_id": 3
     },
     "kyle-busch": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
+      "archetype_id": "late-bloomers",
+      "archetype_name": "Late Bloomers",
+      "cluster_id": 0
     },
     "kyle-larson": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "kyle-petty": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "ld-austin": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
       "cluster_id": 2
-    },
-    "lake-speed": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "landon-cassill": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "larry-frank": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "larry-manning": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "larry-thomas": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "lee-petty": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "leeroy-yarbrough": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "lennie-pond": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "marcos-ambrose": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "mark-martin": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
     },
     "martin-truex-jr": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "marvin-panch": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "matt-dibenedetto": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
       "cluster_id": 2
-    },
-    "matt-kenseth": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "michael-annett": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "michael-mcdowell": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "michael-waltrip": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "mike-alexander": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "mike-bliss": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "mike-skinner": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "mike-wallace": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "morgan-shepherd": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "ned-jarrett": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "neil-bonnett": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "neil-castles": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "nelson-stacy": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "noah-gragson": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "paul-dean-holt": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "paul-goldsmith": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "paul-lewis": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "paul-menard": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "pete-hamilton": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "phil-parsons": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "quin-houff": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ralph-liguori": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ray-duhigg": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "raymond-williams": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "reed-sorenson": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "regan-smith": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "rex-white": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "rich-bickle": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "richard-childress": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "richard-d-brown": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "richard-petty": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "rick-mast": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "rick-wilson": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ricky-craven": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ricky-rudd": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "ricky-stenhouse-jr": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "robby-gordon": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "robert-pressley": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "roger-hamby": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "ron-bouchard": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ron-keselowski": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ronnie-thomas": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ross-chastain": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "roy-mayne": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "roy-tyner": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "rusty-wallace": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
     },
     "ryan-blaney": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
+      "archetype_id": "late-bloomers",
+      "archetype_name": "Late Bloomers",
       "cluster_id": 1
-    },
-    "ryan-newman": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "ryan-preece": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "sam-hornish-jr": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "sam-mcquagg": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "scott-riggs": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "scott-speed": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "scott-wimmer": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "skip-manning": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "slick-johnson": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "speedy-thompson": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "stacy-compton": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "sterling-marlin": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "steve-grissom": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "steve-park": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "stick-elliott": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ted-musgrave": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "terry-labonte": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "tighe-scott": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "tim-flock": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 3
-    },
-    "tim-richmond": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "timmy-hill": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "tiny-lund": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "todd-bodine": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "todd-gilliland": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "tom-pistone": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "tommy-ellis": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "tommy-gale": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "tommy-irwin": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "tony-raines": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "tony-stewart": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "travis-kvapil": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "trevor-bayne": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
-    },
-    "trevor-boys": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "ty-dillon": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "ty-gibbs": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
     },
     "tyler-reddick": {
-      "archetype_id": "dominant-champions",
-      "archetype_name": "Dominant Champions",
-      "cluster_id": 5
-    },
-    "wally-dallenbach-jr": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "walter-ballard": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "ward-burton": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 4
-    },
-    "wayne-smith": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
-      "cluster_id": 0
-    },
-    "wendell-scott": {
-      "archetype_id": "journeymen",
-      "archetype_name": "Journeymen",
+      "archetype_id": "late-bloomers",
+      "archetype_name": "Late Bloomers",
       "cluster_id": 0
     },
     "william-byron": {
       "archetype_id": "journeymen",
       "archetype_name": "Journeymen",
-      "cluster_id": 1
-    },
-    "worth-mcmillion": {
-      "archetype_id": "late-bloomers",
-      "archetype_name": "Late Bloomers",
-      "cluster_id": 2
+      "cluster_id": 5
     }
   },
   "clustering_info": {
-    "total_drivers_clustered": 289,
-    "silhouette_score": 0.1935185036240353,
+    "total_drivers_clustered": 12,
+    "silhouette_score": 0.19677573385677793,
     "algorithm": "K-Means",
     "features_used": 11
   },
-  "export_timestamp": "2025-07-16T11:51:53.747627"
+  "export_timestamp": "2025-07-16T17:10:33.464911"
 }
