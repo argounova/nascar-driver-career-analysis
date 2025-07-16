@@ -1,22 +1,61 @@
 {
-  "name": "frontend",
+  "name": "nascar-analytics-frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "NASCAR Driver Career Analysis - Modern frontend for FastAPI backend",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.4.1"
+    
+    "@mui/material": "^6.2.0",
+    "@mui/icons-material": "^6.2.0",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    
+    "@tanstack/react-query": "^5.56.0",
+    "@tanstack/react-query-devtools": "^5.56.0",
+    
+    "axios": "^1.6.0",
+    
+    "plotly.js": "^2.27.0",
+    "react-plotly.js": "^2.6.0",
+    
+    "react-hook-form": "^7.48.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19"
-  }
+    "@types/react-dom": "^19",
+    "@types/plotly.js": "^2.12.0",
+    "@types/react-plotly.js": "^2.6.0",
+    
+    "eslint": "^8",
+    "eslint-config-next": "15.4.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "author": {
+    "name": "NASCAR Analytics Team"
+  },
+  "keywords": [
+    "nascar",
+    "analytics", 
+    "data-visualization",
+    "racing",
+    "nextjs",
+    "mui",
+    "typescript"
+  ]
 }
