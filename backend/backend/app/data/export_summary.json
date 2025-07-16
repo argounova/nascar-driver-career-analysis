@@ -1,0 +1,13 @@
+{
+  "export_completed": true,
+  "export_timestamp": "2025-07-16T11:03:06.070798",
+  "files_created": [
+    "drivers.json",
+    "archetypes.json",
+    "predictions.json"
+  ],
+  "stats": {
+    "total_drivers": 289,
+    "total_archetypes": 6
+  }
+}
