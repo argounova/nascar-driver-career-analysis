@@ -88,19 +88,20 @@ export interface DriverSearchResult {
  * Includes statistics and representative drivers for each cluster.
  */
 export interface ArchetypeSummary {
-  id: number;                      // Cluster number (0-5)
-  name: string;                    // Archetype name
-  description: string;             // Detailed description
-  color: string;                   // Visualization color
+  id: string;                      // Archetype slug (e.g., "elite-champions")
+  name: string;                    // Archetype name (e.g., "Elite Champions")
+  color: string;                   // Hex color for visualization (#FF6B35)
   driver_count: number;            // Number of drivers in this cluster
-  avg_wins_per_season: number;     // Average wins per season for cluster
-  avg_finish: number;              // Average finishing position
-  avg_top5_rate: number;           // Average top-5 percentage
-  avg_win_rate: number;            // Average win percentage
-  avg_seasons: number;             // Average career length
-  avg_improvement: number;         // Average career improvement metric
-  avg_peak_timing: number;         // Average peak performance timing
-  representative_drivers: string[]; // Notable drivers in this archetype
+  characteristics: {               // Nested characteristics object
+    avg_wins_per_season: number;  // Average wins per season for cluster
+    avg_finish: number;            // Average finishing position
+    avg_top5_rate: number;         // Average top-5 percentage
+    avg_win_rate: number;          // Average win percentage
+    avg_seasons: number;           // Average career length
+  };
+  representative_drivers: string;  // Comma-separated string of driver names
+  top_drivers: string[];           // Array of top driver names
+  description: string;             // Detailed description of the archetype
 }
 
 /**
