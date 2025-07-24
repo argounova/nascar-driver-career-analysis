@@ -42,36 +42,8 @@ import { nascarColors } from '@/lib/theme';
 import { GradientBackground } from '@/components/ui/BackgroundVariations';
 import { nascarApi } from '@/lib/services/nascarApi';
 import { queryKeys } from '@/lib/queryClient';
+import { ArchetypeDetailResponse } from '@/types/api';
 
-// Note: You'll need to add this interface to your types/api.ts file
-interface ArchetypeDetailResponse {
-  archetype: {
-    id: string;
-    name: string;
-    color: string;
-    driver_count: number;
-    characteristics: {
-      avg_wins_per_season: number;
-      avg_finish: number;
-      avg_top5_rate: number;
-      avg_win_rate: number;
-      avg_seasons: number;
-    };
-    representative_drivers: string[];
-    top_drivers: string[];
-    description: string;
-  };
-  drivers: Array<{
-    id: string;
-    name: string;
-    total_wins: number;
-    career_avg_finish: number;
-    total_seasons: number;
-    is_active: boolean;
-  }>;
-  driver_count: number;
-  last_updated: string;
-}
 
 export default function IndividualArchetypePage() {
   const params = useParams();
