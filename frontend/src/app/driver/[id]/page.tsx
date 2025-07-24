@@ -558,12 +558,8 @@ export default function DriverProfilePage() {
                 <Card sx={{ 
                   background: 'rgba(0, 0, 0, 0.3)', 
                   backdropFilter: 'blur(10px)',
-                  border: `1px solid ${driver.archetype?.name === 'Dominant Champions' ? nascarColors.archetypes[0] : 
-                                      driver.archetype?.name === 'Elite Competitors' ? nascarColors.archetypes[1] :
-                                      driver.archetype?.name === 'Consistent Veterans' ? nascarColors.archetypes[2] :
-                                      driver.archetype?.name === 'Solid Performers' ? nascarColors.archetypes[3] :
-                                      driver.archetype?.name === 'Developing Talents' ? nascarColors.archetypes[4] :
-                                      nascarColors.archetypes[5]}40`,
+                  border: `1px solid ${driver.archetype.color}40`,
+                  mb: 3,
                 }}>
                   <CardContent sx={{ textAlign: 'center' }}>
                     <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
@@ -574,59 +570,83 @@ export default function DriverProfilePage() {
                       <Chip
                         label={driver.archetype.name}
                         sx={{
-                          backgroundColor: driver.archetype?.name === 'Dominant Champions' ? nascarColors.archetypes[0] : 
-                                           driver.archetype?.name === 'Elite Competitors' ? nascarColors.archetypes[1] :
-                                           driver.archetype?.name === 'Consistent Veterans' ? nascarColors.archetypes[2] :
-                                           driver.archetype?.name === 'Solid Performers' ? nascarColors.archetypes[3] :
-                                           driver.archetype?.name === 'Developing Talents' ? nascarColors.archetypes[4] :
-                                           nascarColors.archetypes[5],
+                          backgroundColor: driver.archetype.color,
                           color: 'white',
                           fontWeight: 600,
                           fontSize: '1rem',
-                          px: 2,
-                          py: 1,
+                          padding: '4px 8px',
+                          '& .MuiChip-label': {
+                            padding: '0 12px',
+                          }
                         }}
                       />
                     </Box>
 
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      Machine learning classification based on career patterns
-                    </Typography>
+                    {driver.archetype.description && (
+                      <Typography 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{ 
+                          fontStyle: 'italic',
+                          maxWidth: 300,
+                          margin: '0 auto'
+                        }}
+                      >
+                        {driver.archetype.description}
+                      </Typography>
+                    )}
+                    
+                    <Box sx={{ mt: 2 }}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => router.push('/archetypes')}
+                        sx={{
+                          borderColor: driver.archetype.color,
+                          color: driver.archetype.color,
+                          '&:hover': {
+                            borderColor: driver.archetype.color,
+                            backgroundColor: `${driver.archetype.color}20`,
+                          }
+                        }}
+                      >
+                        Learn About Archetypes
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              )}
 
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => {
-                        if (driver.archetype?.name) {
-                          const archetypeSlug = driver.archetype.name.toLowerCase().replace(/\s+/g, '-');
-                          router.push(`/archetypes/${archetypeSlug}`);
-                        }
-                      }}
-                      sx={{
-                        borderColor: driver.archetype?.name === 'Dominant Champions' ? nascarColors.archetypes[0] : 
-                                     driver.archetype?.name === 'Elite Competitors' ? nascarColors.archetypes[1] :
-                                     driver.archetype?.name === 'Consistent Veterans' ? nascarColors.archetypes[2] :
-                                     driver.archetype?.name === 'Solid Performers' ? nascarColors.archetypes[3] :
-                                     driver.archetype?.name === 'Developing Talents' ? nascarColors.archetypes[4] :
-                                     nascarColors.archetypes[5],
-                        color: driver.archetype?.name === 'Dominant Champions' ? nascarColors.archetypes[0] : 
-                               driver.archetype?.name === 'Elite Competitors' ? nascarColors.archetypes[1] :
-                               driver.archetype?.name === 'Consistent Veterans' ? nascarColors.archetypes[2] :
-                               driver.archetype?.name === 'Solid Performers' ? nascarColors.archetypes[3] :
-                               driver.archetype?.name === 'Developing Talents' ? nascarColors.archetypes[4] :
-                               nascarColors.archetypes[5],
-                        '&:hover': {
-                          backgroundColor: `${driver.archetype?.name === 'Dominant Champions' ? nascarColors.archetypes[0] : 
-                                           driver.archetype?.name === 'Elite Competitors' ? nascarColors.archetypes[1] :
-                                           driver.archetype?.name === 'Consistent Veterans' ? nascarColors.archetypes[2] :
-                                           driver.archetype?.name === 'Solid Performers' ? nascarColors.archetypes[3] :
-                                           driver.archetype?.name === 'Developing Talents' ? nascarColors.archetypes[4] :
-                                           nascarColors.archetypes[5]}20`,
-                        },
-                      }}
-                    >
-                      Explore This Archetype
-                    </Button>
+              {/* If no archetype available, show fallback */}
+              {!driver.archetype && (
+                <Card sx={{ 
+                  background: 'rgba(0, 0, 0, 0.3)', 
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  mb: 3,
+                }}>
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                      Driver Archetype
+                    </Typography>
+                    
+                    <Typography variant="body2" color="text.secondary">
+                      Archetype classification not available for this driver.
+                    </Typography>
+                    
+                    <Box sx={{ mt: 2 }}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => router.push('/archetypes')}
+                        sx={{
+                          borderColor: 'rgba(255, 255, 255, 0.3)',
+                          color: 'text.secondary',
+                        }}
+                      >
+                        Learn About Archetypes
+                      </Button>
+                    </Box>
                   </CardContent>
                 </Card>
               )}

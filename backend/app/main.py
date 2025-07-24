@@ -226,8 +226,31 @@ async def get_driver(driver_id: str):
     # Add archetype information if available
     if app_data["archetypes"] and "driver_archetypes" in app_data["archetypes"]:
         driver_archetypes = app_data["archetypes"]["driver_archetypes"]
+
         if driver_id in driver_archetypes:
-            driver["archetype"] = driver_archetypes[driver_id]
+            # Get the driver's archetype assignment
+            driver_archetype_info = driver_archetypes[driver_id]
+            archetype_id = driver_archetype_info["archetype_id"]
+
+            # Find the full archetype details
+            archetypes = app_data["archetypes"]["archetypes"]
+            for archetype in archetypes:
+                if archetype["id"] == archetype_id:
+                    # Assign complete archetype information
+                    driver["archetype"] = {
+                        "name": archetype["name"],
+                        "color": archetype["color"],
+                        "description": archetype.get("description", "") 
+                    }
+                    break
+
+            # If archetype not found in main list, use fallback
+            if "archetype" not in driver:
+                driver["archetype"] = {
+                    "name": driver_archetype_info["archetype_name"],
+                    "color": "#666666",
+                    "description": f"Driver classified as {driver_archetype_info['archetype_name']}"
+                }
     
     return {
         "driver": driver,
