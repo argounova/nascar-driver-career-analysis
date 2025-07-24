@@ -52,7 +52,7 @@ export default function IndividualArchetypePage() {
 
   // Fetch specific archetype data
   const {
-    data: archetypeData,
+    data: response,
     isLoading,
     error,
     isError,
@@ -62,6 +62,18 @@ export default function IndividualArchetypePage() {
     retry: 2,
     staleTime: 15 * 60 * 1000, // Cache for 15 minutes
   });
+
+    // Debug logging
+  React.useEffect(() => {
+    if (response) {
+      console.log('=== ARCHETYPE DETAIL DEBUG ===');
+      console.log('Full response:', response);
+      console.log('Archetype data:', response.archetype);
+      console.log('Drivers array:', response.drivers);
+      console.log('Representative drivers (raw):', response.archetype?.representative_drivers);
+      console.log('==============================');
+    }
+  }, [response]);
 
   // Loading state
   if (isLoading) {
@@ -91,7 +103,7 @@ export default function IndividualArchetypePage() {
   }
 
   // Error state
-  if (isError || !archetypeData) {
+  if (isError || !response) {
     return (
       <GradientBackground>
         <Container maxWidth="lg">
@@ -127,28 +139,25 @@ export default function IndividualArchetypePage() {
     );
   }
 
-  const archetype = archetypeData.archetype;
-  const drivers = archetypeData.drivers;
+  // Extract data from response
+  const archetype = response.archetype;
+  const drivers = response.drivers || [];
+  const archetypeColor = archetype.color || nascarColors.primary;
 
-  // Helper function to get archetype color
-  const getArchetypeColor = (archetypeName: string): string => {
-    const colorMap: Record<string, string> = {
-      'Dominant Champions': nascarColors.archetypes[0],
-      'Elite Competitors': nascarColors.archetypes[1],
-      'Consistent Veterans': nascarColors.archetypes[2],
-      'Solid Performers': nascarColors.archetypes[3],
-      'Developing Talents': nascarColors.archetypes[4],
-      'Journey Drivers': nascarColors.archetypes[5],
-    };
-    return colorMap[archetypeName] || nascarColors.primary;
-  };
+  // Parse representative drivers string into array
+  const representativeDrivers = React.useMemo(() => {
+    if (!archetype.representative_drivers) return [];
+    
+    return archetype.representative_drivers
+      .split(',')
+      .map(driver => driver.trim())
+      .filter(driver => driver.length > 0);
+  }, [archetype.representative_drivers]);
 
-  // Helper function to format percentages
+    // Helper function to format percentages
   const formatPercentage = (value: number): string => {
     return `${(value * 100).toFixed(1)}%`;
   };
-
-  const archetypeColor = getArchetypeColor(archetype.name);
 
   return (
     <GradientBackground>
@@ -161,7 +170,7 @@ export default function IndividualArchetypePage() {
                 onClick={() => router.push('/archetypes')}
                 sx={{ 
                   color: 'text.secondary',
-                  '&:hover': { color: nascarColors.primary },
+                  '&:hover': { color: archetypeColor },
                 }}
               >
                 <BackIcon />

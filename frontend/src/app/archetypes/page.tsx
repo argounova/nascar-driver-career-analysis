@@ -438,6 +438,7 @@ export default function ArchetypeExplorerPage() {
                           {(() => {
                             // representative_drivers is a string, so split it into an array
                             const driversString = archetype.representative_drivers || '';
+                            
                             const drivers = driversString.split(',').map(d => d.trim()).filter(d => d.length > 0);
                             
                             return drivers.slice(0, 3).map((driver, idx) => (
