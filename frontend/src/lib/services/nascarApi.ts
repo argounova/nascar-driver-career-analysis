@@ -6,6 +6,7 @@ import {
   DriversListResponse,
   DriversSearchResponse,
   ArchetypesResponse,
+  ArchetypeDetailResponse,
   HealthResponse,
   DriversQueryParams,
   DriverSearchParams,
@@ -292,6 +293,22 @@ export const archetypesService = {
     } catch (error: any) {
       console.error('Failed to fetch clustering info:', error);
       throw new Error(error.userMessage || 'Failed to load clustering information');
+    }
+  },
+
+  /**
+   * Get detailed information for a specific archetype by ID
+   * @param archetypeId - Archetype slug (e.g., 'mid-pack-drivers')
+   * @returns Promise with full archetype details including driver list
+   */
+  async getArchetypeById(archetypeId: string): Promise<ArchetypeDetailResponse> {
+    try {
+      const response = await apiClient.get<ArchetypeDetailResponse>(`/api/archetypes/${archetypeId}`);
+      
+      return response.data;
+    } catch (error: any) {
+      console.error(`Failed to fetch archetype "${archetypeId}":`, error);
+      throw new Error(error.userMessage || `Failed to load archetype "${archetypeId}"`);
     }
   },
 };

@@ -85,16 +85,8 @@ export default function IndividualArchetypePage() {
     error,
     isError,
   } = useQuery({
-    queryKey: ['archetypes', 'detail', archetypeId],
-    queryFn: async (): Promise<ArchetypeDetailResponse> => {
-      // Call your backend endpoint for individual archetype
-      const response = await fetch(`http://localhost:8000/api/archetypes/${archetypeId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch archetype details');
-      }
-      const data = await response.json();
-      return data as ArchetypeDetailResponse;
-    },
+    queryKey: queryKeys.archetypes.detail(archetypeId),
+    queryFn: () => nascarApi.archetypes.getArchetypeById(archetypeId),
     retry: 2,
     staleTime: 15 * 60 * 1000, // Cache for 15 minutes
   });

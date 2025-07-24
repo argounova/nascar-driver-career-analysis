@@ -101,6 +101,7 @@ export const queryKeys = {
     all: ['archetypes'] as const,
     list: () => [...queryKeys.archetypes.all, 'list'] as const,
     byName: (name: string) => [...queryKeys.archetypes.all, 'byName', name] as const,
+    detail: (archetypeId: string) => [...queryKeys.archetypes.all, 'detail', archetypeId] as const,
     clusteringInfo: () => [...queryKeys.archetypes.all, 'clustering'] as const,
   },
 } as const;
