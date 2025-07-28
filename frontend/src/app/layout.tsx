@@ -4,11 +4,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import QueryProvider from "@/components/providers/QueryProvider";
+import NavBar from "@/components/layout/NavBar";
 
 /**
  * Root Layout Component
  * 
- * This is the root layout that wraps your entire NASCAR analytics application.
+ * This is the root layout that wraps the entire NASCAR analytics application.
  * It provides the foundation layers that all pages and components will use:
  * 
  * 1. Font Configuration - Geist Sans & Mono fonts
@@ -18,7 +19,7 @@ import QueryProvider from "@/components/providers/QueryProvider";
  * The provider order is important:
  * - ThemeProvider (outermost) - provides MUI theme context
  * - QueryProvider (inner) - provides React Query context
- * - Page content (innermost) - your actual app content
+ * - Page content (innermost) - the actual app content
  */
 
 const geistSans = Geist({
@@ -68,9 +69,11 @@ export default function RootLayout({
           Provider Stack:
           1. ThemeProvider - MUI theme with NASCAR colors and dark mode
           2. QueryProvider - React Query for API state management
+          3. NavBar - Consistent navigation across all pages
         */}
         <ThemeProvider>
           <QueryProvider>
+            <NavBar />
             {children}
           </QueryProvider>
         </ThemeProvider>

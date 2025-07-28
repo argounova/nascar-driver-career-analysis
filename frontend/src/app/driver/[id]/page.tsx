@@ -142,7 +142,7 @@ export default function DriverProfilePage() {
         <Box sx={{ py: 4 }}>
           {/* Header Section */}
           <Box sx={{ mb: 4 }}>
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+            {/* <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
               <IconButton
                 onClick={() => router.push('/')}
                 sx={{ 
@@ -155,7 +155,7 @@ export default function DriverProfilePage() {
               <Typography variant="caption" color="text.secondary">
                 Back to Search
               </Typography>
-            </Stack>
+            </Stack> */}
 
             <Stack 
               direction={{ xs: 'column', md: 'row' }} 

@@ -507,9 +507,29 @@ export default function IndividualArchetypePage() {
                   <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
                     All Drivers ({archetype.driver_count})
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Sorted by career wins
-                  </Typography>
+                  <Stack justifyContent="space-between" sx={{   mb: 2 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      Sorted by career wins
+                    </Typography>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Typography variant="body2" color="text.secondary">
+                        Active:
+                      </Typography>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <ActiveIcon sx={{ fontSize: 16, color: '#4caf50' }} />
+                        <Typography variant="caption" color="text.secondary">
+                          Active
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <InactiveIcon sx={{ fontSize: 16, color: '#757575' }} />
+                        <Typography variant="caption" color="text.secondary">
+                          Inactive
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+
                 </CardContent>
                 
                 <Box sx={{ maxHeight: 350, overflow: 'auto' }}>
