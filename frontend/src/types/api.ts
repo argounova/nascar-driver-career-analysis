@@ -2,18 +2,18 @@
 /**
  * TypeScript Type Definitions for NASCAR Analytics API
  * 
- * This file defines the exact structure of data that comes from your FastAPI backend.
- * It ensures type safety throughout your React app - TypeScript will catch errors
- * if you try to access properties that don't exist or use the wrong data types.
+ * This file defines the exact structure of data that comes from the FastAPI backend.
+ * It ensures type safety throughout the React app - TypeScript will catch errors
+ * when trying to access properties that don't exist or use the wrong data types.
  * 
- * These types are based on your FastAPI backend's JSON response structures.
+ * These types are based on the FastAPI backend's JSON response structures.
  */
 
 /**
  * Driver Career Statistics
  * 
  * Represents the core performance metrics for a NASCAR driver's career.
- * This matches the structure from your backend's driver data export.
+ * This matches the structure from the backend's driver data export.
  */
 export interface DriverCareerStats {
   total_wins: number;              // Career race wins
@@ -40,7 +40,7 @@ export interface RecentPerformance {
  * Driver Archetype Information
  * 
  * Represents the machine learning cluster assignment for a driver.
- * This comes from your clustering analysis backend.
+ * This comes from the clustering analysis backend.
  */
 export interface DriverArchetype {
   name: string;                    // Archetype name (e.g., "Elite Champions")
@@ -82,32 +82,52 @@ export interface DriverSearchResult {
 }
 
 /**
+ * Individual Driver Data for Archetype Lists
+ * 
+ * Simplified driver info used in archetype driver lists.
+ */
+export interface ArchetypeDriver {
+  id: string;                      // Driver slug for navigation
+  name: string;                    // Full driver name
+  total_wins: number;              // Career wins
+  career_avg_finish: number;       // Average finish position
+  total_seasons: number;           // Number of seasons active
+  total_races: number;             // Total races participated
+  career_top5_rate: number;        // Top-5 finish rate
+  career_win_rate: number;         // Win rate
+  is_active: boolean;              // Currently active status
+  cluster_id: number;              // Cluster/archetype ID
+  archetype: string;               // Archetype name
+}
+
+/**
  * Archetype Summary
  * 
  * Complete information about a driver archetype from clustering analysis.
  * Includes statistics and representative drivers for each cluster.
  */
 export interface ArchetypeSummary {
-  id: string;                      // Archetype slug (e.g., "elite-champions")
-  name: string;                    // Archetype name (e.g., "Elite Champions")
-  color: string;                   // Hex color for visualization (#FF6B35)
-  driver_count: number;            // Number of drivers in this cluster
-  characteristics: {               // Nested characteristics object
-    avg_wins_per_season: number;  // Average wins per season for cluster
-    avg_finish: number;            // Average finishing position
-    avg_top5_rate: number;         // Average top-5 percentage
-    avg_win_rate: number;          // Average win percentage
-    avg_seasons: number;           // Average career length
+  id: string;                           // Archetype slug (e.g., "elite-champions")
+  name: string;                         // Archetype name (e.g., "Elite Champions")
+  color: string;                        // Hex color for visualization (#FF6B35)
+  driver_count: number;                 // Number of drivers in this cluster
+  characteristics: {                    // Nested characteristics object
+    avg_wins_per_season: number;        // Average wins per season for cluster
+    avg_finish: number;                 // Average finishing position
+    avg_top5_rate: number;              // Average top-5 percentage
+    avg_win_rate: number;               // Average win percentage
+    avg_seasons: number;                // Average career length
   };
-  representative_drivers: string;  // Comma-separated string of driver names
-  top_drivers: string[];           // Array of top driver names
-  description: string;             // Detailed description of the archetype
+  representative_drivers: string;       // Comma-separated string of driver names
+  top_drivers: string[];                // Array of top driver names
+  archetype_drivers: ArchetypeDriver[]; // Full array of driver objects
+  description: string;                  // Detailed description of the archetype
 }
 
 /**
  * API Response Wrappers
  * 
- * These represent the exact JSON structure returned by your FastAPI endpoints.
+ * These represent the exact JSON structure returned by the FastAPI endpoints.
  * They include metadata like pagination, timestamps, and data source info.
  */
 
@@ -167,6 +187,7 @@ export interface ArchetypeDetailResponse {
     };
     representative_drivers: string;
     top_drivers: string[];
+    archetype_drivers: ArchetypeDriver[];
     description: string;
   };
   drivers: Array<{

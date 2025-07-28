@@ -69,11 +69,26 @@ export default function IndividualArchetypePage() {
       console.log('=== ARCHETYPE DETAIL DEBUG ===');
       console.log('Full response:', response);
       console.log('Archetype data:', response.archetype);
-      console.log('Drivers array:', response.drivers);
+      console.log('Drivers array:', response.archetype.top_drivers);
       console.log('Representative drivers (raw):', response.archetype?.representative_drivers);
       console.log('==============================');
     }
   }, [response]);
+
+  // Parse representative drivers string into array
+  const representativeDrivers = React.useMemo(() => {
+    if (!response?.archetype?.representative_drivers) return [];
+    
+    return response.archetype.representative_drivers
+      .split(',')
+      .map(driver => driver.trim())
+      .filter(driver => driver.length > 0);
+  }, [response?.archetype?.representative_drivers]);
+
+  // Helper function to format percentages
+  const formatPercentage = React.useCallback((value: number): string => {
+    return `${(value * 100).toFixed(1)}%`;
+  }, []);
 
   // Loading state
   if (isLoading) {
@@ -143,21 +158,6 @@ export default function IndividualArchetypePage() {
   const archetype = response.archetype;
   const drivers = response.drivers || [];
   const archetypeColor = archetype.color || nascarColors.primary;
-
-  // Parse representative drivers string into array
-  const representativeDrivers = React.useMemo(() => {
-    if (!archetype.representative_drivers) return [];
-    
-    return archetype.representative_drivers
-      .split(',')
-      .map(driver => driver.trim())
-      .filter(driver => driver.length > 0);
-  }, [archetype.representative_drivers]);
-
-    // Helper function to format percentages
-  const formatPercentage = (value: number): string => {
-    return `${(value * 100).toFixed(1)}%`;
-  };
 
   return (
     <GradientBackground>
@@ -473,10 +473,10 @@ export default function IndividualArchetypePage() {
                   
                   <Stack spacing={1}>
                     {(() => {
-                      // Ensure we have a proper array
-                      const drivers = Array.isArray(archetype.representative_drivers) 
-                        ? archetype.representative_drivers 
-                        : [];
+                      // representative_drivers is a string, so split it into an array
+                      const driversString = archetype.representative_drivers || '';
+                            
+                      const drivers = driversString.split(',').map(d => d.trim()).filter(d => d.length > 0);
                       
                       return drivers.map((driver, index) => (
                         <Chip
@@ -505,7 +505,7 @@ export default function IndividualArchetypePage() {
               }}>
                 <CardContent sx={{ pb: 0 }}>
                   <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                    All Drivers ({drivers.length})
+                    All Drivers ({archetype.driver_count})
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                     Sorted by career wins
@@ -514,7 +514,7 @@ export default function IndividualArchetypePage() {
                 
                 <Box sx={{ maxHeight: 350, overflow: 'auto' }}>
                   <List dense>
-                    {drivers.slice(0, 20).map((driver, index) => (
+                    {archetype.archetype_drivers.map((driver, index) => (
                       <ListItem key={driver.id} disablePadding>
                         <ListItemButton 
                           onClick={() => router.push(`/driver/${driver.id}`)}

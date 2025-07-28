@@ -2,10 +2,10 @@
 """
 Data Export Script for NASCAR FastAPI Backend
 
-This script exports data from your existing NASCAR analysis models
+This script exports data from the existing NASCAR analysis models
 into JSON files that the FastAPI backend can serve efficiently.
 
-Run this script whenever you want to update the API data.
+Run this script whenever update the API data needs to be updated.
 """
 
 import sys
@@ -17,7 +17,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 import re
 
-# Add your existing src directory to path
+# Add existing src directory to path
 # Script is in backend/scripts/, so go up 2 levels to get to project root
 project_root = Path(__file__).parent.parent.parent  # Go up 2 levels from backend/scripts/
 src_dir = project_root / 'src'
@@ -31,7 +31,7 @@ print(f"Project root: {project_root}")
 print(f"Src directory: {src_dir}")
 print(f"Src exists: {src_dir.exists()}")
 
-# Import your existing modules
+# Import existing modules
 from data.data_loader import load_nascar_data
 from data.feature_engineering import create_nascar_features
 from models.clustering import run_clustering_analysis
@@ -77,19 +77,19 @@ def export_drivers_data() -> Dict[str, Any]:
     
     for driver_name, stats in driver_careers.iterrows():
         # Skip drivers with very short careers for API efficiency
-        if stats['total_seasons'] < 3:
-            continue
+        # if stats['total_seasons'] < 3:
+        #     continue
             
         driver_slug = create_driver_slug(driver_name)
         
-        # Determine if driver is active (raced in last 2 years)
+        # Determine if driver is active
         current_year = datetime.now().year
-        is_active = stats['last_season'] >= (current_year - 2)
+        is_active = stats['last_season'] >= (current_year - 1)
         
-        # Get recent performance (last 3 seasons)
+        # Get recent performance (last season)
         recent_seasons = driver_seasons[
             (driver_seasons['Driver'] == driver_name) & 
-            (driver_seasons['Season'] >= stats['last_season'] - 2)
+            (driver_seasons['Season'] >= stats['last_season'])
         ]
         
         recent_avg_finish = recent_seasons['avg_finish'].mean() if not recent_seasons.empty else stats['career_avg_finish']
@@ -156,12 +156,38 @@ def export_archetypes_data() -> Dict[str, Any]:
         
         archetypes = []
         for idx, row in cluster_analysis.iterrows():
-            # Get drivers in this archetype
-            archetype_drivers = career_data[career_data['cluster'] == idx]
+            # Get drivers in this archetype (this returns a dataframe)
+            archetype_drivers_df = career_data[career_data['cluster'] == idx]
             
             # Get top drivers by total wins
-            top_drivers = archetype_drivers.nlargest(5, 'total_wins')['Driver'].tolist()
+            top_drivers = archetype_drivers_df.nlargest(5, 'total_wins')['Driver'].tolist()
             
+            # Convert dataframe to list of driver objects
+            archetype_drivers_list = []
+            for _, driver_row in archetype_drivers_df.iterrows():
+                # Determine active status
+                current_year = datetime.now().year
+                driver_last_season = driver_row.get('last_season', 0)
+                driver_is_active = driver_last_season >= (current_year - 1)
+
+                driver_obj = {
+                    'id': create_driver_slug(driver_row['Driver']),
+                    'name': driver_row['Driver'],
+                    'total_wins': int(driver_row['total_wins']),
+                    'career_avg_finish': float(driver_row['career_avg_finish']),
+                    'total_seasons': int(driver_row['seasons_active']),
+                    'total_races': int(driver_row['total_races']),
+                    'career_top5_rate': float(driver_row['top5_rate']),
+                    'career_win_rate': float(driver_row['win_rate']),
+                    'is_active': bool(driver_is_active),
+                    'cluster_id': int(driver_row['cluster']),
+                    'archetype': driver_row['archetype']
+                }
+                archetype_drivers_list.append(driver_obj)
+
+            # Sort by total wins (highest first)
+            archetype_drivers_list.sort(key=lambda x: x['total_wins'], reverse=True)
+
             archetype_data = {
                 'id': create_driver_slug(row['archetype']),
                 'name': row['archetype'],
@@ -176,6 +202,7 @@ def export_archetypes_data() -> Dict[str, Any]:
                 },
                 'representative_drivers': row['representative_drivers'],
                 'top_drivers': top_drivers,
+                'archetype_drivers': archetype_drivers_list,
                 'description': get_archetype_description(row['archetype'])
             }
             
@@ -278,8 +305,8 @@ def export_predictions_data() -> Dict[str, Any]:
     """Export LSTM prediction data (simplified for now)."""
     print("🧠 Preparing prediction data...")
     
-    # For now, we'll create a simple structure
-    # You can expand this once we integrate the LSTM model properly
+    # For now, create a simple structure
+    # Expand this once the LSTM model is properly integrated
     return {
         'predictions_available': False,
         'message': 'LSTM predictions will be integrated in next phase',
@@ -293,7 +320,7 @@ def main():
     
     # Create backend data directory
     # Script is in backend/scripts/, so parent is backend/
-    backend_dir = Path(__file__).parent.parent  # This gets us to backend/
+    backend_dir = Path(__file__).parent.parent  # This gets to backend/
     data_dir = backend_dir / 'app' / 'data'
     data_dir.mkdir(parents=True, exist_ok=True)
     
