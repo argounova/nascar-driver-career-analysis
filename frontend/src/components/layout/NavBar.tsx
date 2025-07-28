@@ -158,7 +158,7 @@ export default function NavBar() {
         <Container maxWidth="lg">
           <Toolbar sx={{ px: { xs: 0, sm: 2 } }}>
             {/* Logo/Brand */}
-            <Stack
+            {/* <Stack
               direction="row"
               alignItems="center"
               spacing={1}
@@ -202,7 +202,7 @@ export default function NavBar() {
               >
                 NASCAR
               </Typography>
-            </Stack>
+            </Stack> */}
 
             {/* Desktop Navigation */}
             {!isMobile && (

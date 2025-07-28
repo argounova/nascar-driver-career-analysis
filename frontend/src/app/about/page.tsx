@@ -69,7 +69,7 @@ export default function AboutPage() {
 
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                   Built using modern web technologies and powered by decades of NASCAR Cup Series data, 
-                  our platform offers interactive visualizations and data-driven analysis to help fans, 
+                  this platform offers interactive visualizations and data-driven analysis to help fans, 
                   analysts, and researchers better understand the sport of NASCAR racing.
                 </Typography>
               </CardContent>
@@ -205,7 +205,7 @@ export default function AboutPage() {
                       Data Sources
                     </Typography>
                     <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ gap: 1 }}>
-                      {['NASCAR Cup Series', 'Historical Race Data', 'Driver Statistics', 'Performance Metrics'].map((source) => (
+                      {['nascaR.data Library'].map((source) => (
                         <Chip
                           key={source}
                           label={source}
@@ -235,8 +235,8 @@ export default function AboutPage() {
                   🚧 More Content Coming Soon
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  This about page will be expanded with more detailed information about the project, 
-                  methodology, data sources, and team behind NASCAR Analytics.
+                  This project and about page will be expanded with more detailed information about the analysis, 
+                  methodology, data sources, and team behind NASCAR Analytics (spoiler, it's one developer and one LLM).
                 </Typography>
               </CardContent>
             </Card>
