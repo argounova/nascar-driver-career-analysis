@@ -21,7 +21,7 @@ log_message <- function(message) {
   cat(paste0("[", timestamp, "] ", message, "\n"))
 }
 
-# Function to check if we're in the right directory
+# Function to check if in the right directory
 check_project_structure <- function() {
   if (!dir.exists("data/raw")) {
     log_message("Creating data/raw directory...")
@@ -86,18 +86,29 @@ main <- function() {
   # Export to Parquet (preferred format - faster and smaller)
   parquet_path <- "data/raw/cup_series.parquet"
   log_message("Exporting data to Parquet format...")
-  tryCatch({
+  parquet_success <- tryCatch({
     arrow::write_parquet(nascaR.data::cup_series, parquet_path)
     log_message(paste("Parquet export completed:", parquet_path))
+    TRUE
   }, error = function(e) {
     log_message(paste("Error exporting to Parquet:", e$message))
+    FALSE
+  })
 
-    # Fallback to CSV
-    log_message("Falling back to CSV export...")
-    csv_path <- "data/raw/cup_series.csv"
+  # Always create CSV for development/inspection purposes
+  csv_path <- "data/raw/cup_series.csv"
+  log_message("Creating CSV file for data inspection...")
+  csv_success <- tryCatch({
     write.csv(nascaR.data::cup_series, csv_path, row.names = FALSE)
     log_message(paste("CSV export completed:", csv_path))
+    TRUE
+  }, error = function(e) {
+    log_message(paste("Error exporting to CSV:", e$message))
+    FALSE
   })
+
+  # Determine primary export format for metadata
+  export_format <- if (parquet_success) "parquet" else if (csv_success) "csv" else "none"
 
   # Create metadata file with update information
   metadata <- list(
