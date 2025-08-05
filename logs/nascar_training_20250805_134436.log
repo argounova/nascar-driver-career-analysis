@@ -1,0 +1,117 @@
+2025-08-05 13:44:36,377 - nascar_training - INFO - Training session started at 2025-08-05 13:44:36.377226
+2025-08-05 13:44:36,377 - nascar_training - INFO - Log file: logs/nascar_training_20250805_134436.log
+2025-08-05 13:44:36,377 - nascar_training - INFO - 🏁 STEP 1: Data loading and validation
+2025-08-05 13:44:36,384 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:44:36,584 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:44:36,587 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:44:36,603 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:44:38,410 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:44:38,449 - nascar_training - INFO - 🔧 STEP 2: Feature engineering
+2025-08-05 13:44:38,449 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:44:38,469 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:44:38,473 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:44:38,482 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:44:40,373 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:44:40,376 - data.feature_engineering - INFO - 🔧 Starting comprehensive feature engineering pipeline...
+2025-08-05 13:44:40,380 - data.feature_engineering - INFO - Creating rolling window features...
+2025-08-05 13:44:59,595 - data.feature_engineering - INFO - Added rolling features for 3 window sizes
+2025-08-05 13:44:59,644 - data.feature_engineering - INFO - Identifying career phases...
+2025-08-05 13:45:02,279 - data.feature_engineering - INFO - Career phases identified
+2025-08-05 13:45:02,286 - data.feature_engineering - INFO - Calculating performance trends...
+2025-08-05 13:45:09,194 - data.feature_engineering - INFO - Performance trends calculated
+2025-08-05 13:45:09,206 - data.feature_engineering - INFO - Detecting peak performance periods...
+2025-08-05 13:45:12,891 - data.feature_engineering - INFO - Peak performance detection completed
+2025-08-05 13:45:12,892 - data.feature_engineering - INFO - Calculating consistency metrics...
+2025-08-05 13:45:16,421 - data.feature_engineering - INFO - Consistency metrics calculated
+2025-08-05 13:45:16,433 - data.feature_engineering - INFO - Creating lag features for [1, 2, 3] seasons...
+2025-08-05 13:45:24,101 - data.feature_engineering - INFO - Lag features created
+2025-08-05 13:45:24,102 - data.feature_engineering - INFO - ✅ Feature engineering complete!
+2025-08-05 13:45:24,102 - data.feature_engineering - INFO -    Original features: 16
+2025-08-05 13:45:24,102 - data.feature_engineering - INFO -    Engineered features: 176
+2025-08-05 13:45:24,102 - data.feature_engineering - INFO -    Added features: 160
+2025-08-05 13:45:24,102 - data.feature_engineering - INFO - Creating LSTM sequences with length 5...
+2025-08-05 13:45:25,602 - data.feature_engineering - INFO - Created 3069 LSTM sequences for 437 drivers
+2025-08-05 13:45:25,702 - data.feature_engineering - INFO - LSTM sequences saved to data/processed/lstm_sequences.npz
+2025-08-05 13:45:25,702 - data.feature_engineering - INFO - Engineered features saved to data/processed/engineered_features.parquet
+2025-08-05 13:45:25,708 - nascar_training - INFO - 🏷️ STEP 3: Driver archetype clustering
+2025-08-05 13:45:25,708 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:45:25,735 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:45:25,739 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:45:25,747 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:45:27,552 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:45:27,559 - models.clustering - INFO - Preparing clustering features from driver seasons
+2025-08-05 13:45:28,814 - models.clustering - INFO - Prepared features for 975 drivers
+2025-08-05 13:45:28,817 - models.clustering - INFO - Selected 11 features for clustering
+2025-08-05 13:45:28,817 - models.clustering - INFO - Finding optimal number of clusters...
+2025-08-05 13:45:29,251 - models.clustering - INFO - Clusters: 2, Inertia: 8198.74, Silhouette: 0.419
+2025-08-05 13:45:29,363 - models.clustering - INFO - Clusters: 3, Inertia: 7212.35, Silhouette: 0.191
+2025-08-05 13:45:29,491 - models.clustering - INFO - Clusters: 4, Inertia: 6437.32, Silhouette: 0.160
+2025-08-05 13:45:29,660 - models.clustering - INFO - Clusters: 5, Inertia: 5936.91, Silhouette: 0.155
+2025-08-05 13:45:29,808 - models.clustering - INFO - Clusters: 6, Inertia: 5489.61, Silhouette: 0.163
+2025-08-05 13:45:30,060 - models.clustering - INFO - Clusters: 7, Inertia: 5139.74, Silhouette: 0.178
+2025-08-05 13:45:30,264 - models.clustering - INFO - Clusters: 8, Inertia: 4832.27, Silhouette: 0.165
+2025-08-05 13:45:30,408 - models.clustering - INFO - Clusters: 9, Inertia: 4592.22, Silhouette: 0.155
+2025-08-05 13:45:30,546 - models.clustering - INFO - Clusters: 10, Inertia: 4300.23, Silhouette: 0.170
+2025-08-05 13:45:30,547 - models.clustering - INFO - Optimal clusters - Silhouette: 2, Elbow: 5, Config: 6
+2025-08-05 13:45:30,547 - models.clustering - INFO - Fitting K-means with 6 clusters
+2025-08-05 13:45:30,663 - models.clustering - INFO - Final model - Inertia: 5489.61, Silhouette: 0.163
+2025-08-05 13:45:30,720 - models.clustering - INFO - Clustering results saved to data/models/driver_clustering_model.pkl
+2025-08-05 13:45:30,721 - models.clustering - INFO - Driver assignments saved to data/processed/driver_archetypes.parquet
+2025-08-05 13:45:30,721 - models.clustering - INFO - Cluster analysis saved to data/processed/cluster_analysis.parquet
+2025-08-05 13:45:30,730 - nascar_training - INFO - 🧠 STEP 4: LSTM career trajectory prediction
+2025-08-05 13:45:30,730 - models.lstm_model - INFO - TensorFlow version: 2.17.0
+2025-08-05 13:45:30,730 - models.lstm_model - INFO - Using import style: 2.x
+2025-08-05 13:45:30,736 - models.lstm_model - INFO - No GPUs found, using CPU
+2025-08-05 13:45:30,736 - models.lstm_model - INFO - Loaded 3069 sequences with shape (3069, 5, 17)
+2025-08-05 13:45:30,736 - models.lstm_model - INFO - Preparing prediction targets...
+2025-08-05 13:45:32,544 - models.lstm_model - INFO - Prepared 8 prediction targets
+2025-08-05 13:45:32,544 - models.lstm_model - INFO - Preprocessing data for LSTM training...
+2025-08-05 13:45:32,549 - models.lstm_model - INFO - Data split - Train: 1964, Val: 491, Test: 614
+2025-08-05 13:45:32,551 - models.lstm_model - INFO - Building LSTM model architecture...
+2025-08-05 13:45:32,664 - models.lstm_model - INFO - Model architecture:
+2025-08-05 13:45:32,667 - models.lstm_model - INFO - Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ lstm_1 (LSTM)                        │ (None, 5, 64)               │          20,992 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_norm_1 (BatchNormalization)    │ (None, 5, 64)               │             256 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ lstm_2 (LSTM)                        │ (None, 32)                  │          12,416 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_norm_2 (BatchNormalization)    │ (None, 32)                  │             128 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 16)                  │             528 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_final (Dropout)              │ (None, 16)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ output (Dense)                       │ (None, 8)                   │             136 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 34,456 (134.59 KB)
+ Trainable params: 34,264 (133.84 KB)
+ Non-trainable params: 192 (768.00 B)
+
+2025-08-05 13:45:32,667 - models.lstm_model - INFO - Starting LSTM model training...
+2025-08-05 13:45:57,683 - models.lstm_model - INFO - Training completed!
+2025-08-05 13:45:57,705 - models.lstm_model - INFO - Model saved to data/models/lstm_career_predictor.keras
+2025-08-05 13:45:57,705 - models.lstm_model - INFO - Preprocessors saved to data/models/lstm_preprocessors.pkl
+2025-08-05 13:45:57,706 - nascar_training - INFO - 🎯 STEP 5: Finish position prediction model
+2025-08-05 13:45:57,706 - models.finish_position_predictor - INFO - Training finishing position predictor with NASCAR data...
+2025-08-05 13:45:57,721 - models.finish_position_predictor - INFO - Creating training examples from seasons 2020-2024
+2025-08-05 13:46:13,492 - models.finish_position_predictor - INFO - Created 6509 training examples from 74 drivers
+2025-08-05 13:46:13,585 - models.finish_position_predictor - INFO - Training complete - Val MAE: 7.69, Val R²: 0.258
+2025-08-05 13:46:13,587 - models.finish_position_predictor - INFO - Model saved to data/models/finish_position_predictor.pkl
+2025-08-05 13:46:13,588 - nascar_training - INFO - 📊 STEP 6: Driver volatility prediction model
+2025-08-05 13:46:13,588 - models.driver_volatility_predictor - INFO - Training driver volatility predictor...
+2025-08-05 13:46:13,609 - models.driver_volatility_predictor - INFO - Creating training examples from seasons 2020-2024
+2025-08-05 13:46:34,951 - models.driver_volatility_predictor - INFO - Created 6264 training examples from 63 drivers
+2025-08-05 13:46:37,338 - models.driver_volatility_predictor - INFO - Training complete - Val MAE: 2.02, Val R²: 0.400
+2025-08-05 13:46:37,371 - models.driver_volatility_predictor - INFO - Model saved to data/models/driver_volatility_predictor.pkl
+2025-08-05 13:46:37,372 - nascar_training - INFO - 🏆 STEP 7: Win probability prediction model
+2025-08-05 13:46:37,372 - models.win_probability_predictor - INFO - Training win probability predictor...
+2025-08-05 13:46:37,395 - models.win_probability_predictor - INFO - Creating training examples from seasons 2020-2024
+2025-08-05 13:46:54,439 - models.win_probability_predictor - INFO - Created 6509 training examples with 2.7% win rate
+2025-08-05 13:46:54,560 - models.win_probability_predictor - INFO - Training complete - Val Accuracy: 0.972, Val AUC: 0.761
+2025-08-05 13:46:54,562 - models.win_probability_predictor - INFO - Model saved to data/models/win_probability_predictor.pkl
+2025-08-05 13:46:54,624 - nascar_training - ERROR - Pipeline failed at step: 'FinishPositionPredictor' object has no attribute 'get_model_info'
+2025-08-05 13:46:54,624 - nascar_training - ERROR - Pipeline failed: 'FinishPositionPredictor' object has no attribute 'get_model_info'

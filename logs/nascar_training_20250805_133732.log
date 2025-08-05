@@ -1,0 +1,44 @@
+2025-08-05 13:37:32,371 - nascar_training - INFO - Training session started at 2025-08-05 13:37:32.371640
+2025-08-05 13:37:32,371 - nascar_training - INFO - Log file: logs/nascar_training_20250805_133732.log
+2025-08-05 13:37:32,371 - nascar_training - INFO - STEP 1: Data loading and validation
+2025-08-05 13:37:32,379 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:37:32,633 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:37:32,637 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:37:32,653 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:37:34,268 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:37:34,312 - nascar_training - INFO - STEP 2: Feature engineering
+2025-08-05 13:37:34,312 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:37:34,343 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:37:34,349 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:37:34,359 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:37:36,274 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:37:36,291 - data.feature_engineering - INFO - 🔧 Starting comprehensive feature engineering pipeline...
+2025-08-05 13:37:36,295 - data.feature_engineering - INFO - Creating rolling window features...
+2025-08-05 13:37:47,639 - data.feature_engineering - INFO - Added rolling features for 3 window sizes
+2025-08-05 13:37:47,688 - data.feature_engineering - INFO - Identifying career phases...
+2025-08-05 13:37:50,008 - data.feature_engineering - INFO - Career phases identified
+2025-08-05 13:37:50,008 - data.feature_engineering - INFO - Calculating performance trends...
+2025-08-05 13:37:56,076 - data.feature_engineering - INFO - Performance trends calculated
+2025-08-05 13:37:56,088 - data.feature_engineering - INFO - Detecting peak performance periods...
+2025-08-05 13:37:59,735 - data.feature_engineering - INFO - Peak performance detection completed
+2025-08-05 13:37:59,735 - data.feature_engineering - INFO - Calculating consistency metrics...
+2025-08-05 13:38:02,873 - data.feature_engineering - INFO - Consistency metrics calculated
+2025-08-05 13:38:02,886 - data.feature_engineering - INFO - Creating lag features for [1, 2, 3] seasons...
+2025-08-05 13:38:09,598 - data.feature_engineering - INFO - Lag features created
+2025-08-05 13:38:09,611 - data.feature_engineering - INFO - ✅ Feature engineering complete!
+2025-08-05 13:38:09,611 - data.feature_engineering - INFO -    Original features: 15
+2025-08-05 13:38:09,611 - data.feature_engineering - INFO -    Engineered features: 134
+2025-08-05 13:38:09,611 - data.feature_engineering - INFO -    Added features: 119
+2025-08-05 13:38:09,611 - data.feature_engineering - INFO - Creating LSTM sequences with length 5...
+2025-08-05 13:38:11,087 - data.feature_engineering - INFO - Created 3069 LSTM sequences for 437 drivers
+2025-08-05 13:38:11,213 - data.feature_engineering - INFO - LSTM sequences saved to data/processed/lstm_sequences.npz
+2025-08-05 13:38:11,213 - data.feature_engineering - INFO - Engineered features saved to data/processed/engineered_features.parquet
+2025-08-05 13:38:11,226 - nascar_training - INFO - STEP 3: Driver archetype clustering
+2025-08-05 13:38:11,227 - data.data_loader - INFO - Loading data from Parquet: data/raw/cup_series.parquet
+2025-08-05 13:38:11,277 - data.data_loader - INFO - Loaded 99645 records from 1949 to 2025
+2025-08-05 13:38:11,281 - data.data_loader - INFO - Date filtering: 99645 -> 99645 records
+2025-08-05 13:38:11,290 - data.data_loader - INFO - Missing data removal: 99645 -> 99645 records
+2025-08-05 13:38:12,898 - data.data_loader - INFO - Created season summaries for 9787 driver-seasons
+2025-08-05 13:38:12,902 - models.clustering - INFO - Preparing clustering features from driver seasons
+2025-08-05 13:38:12,902 - nascar_training - ERROR - Pipeline failed at step: "Column(s) ['avg_rating', 'dnfs', 'top_10s', 'top_5s'] do not exist"
+2025-08-05 13:38:12,903 - nascar_training - ERROR - Pipeline failed: "Column(s) ['avg_rating', 'dnfs', 'top_10s', 'top_5s'] do not exist"

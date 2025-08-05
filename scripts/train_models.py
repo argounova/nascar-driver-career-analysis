@@ -7,8 +7,11 @@ This script orchestrates the complete machine learning pipeline:
 2. Feature engineering
 3. Driver clustering analysis
 4. LSTM career trajectory prediction
-5. Model evaluation and visualization
-6. Results export and reporting
+5. Finish position prediction (Linear Regression)
+6. Driver volatility prediction (Random Forest)
+7. Win probability prediction (Logistic Regression)
+8. Model evaluation and visualization
+9. Results export and reporting
 
 Run this from the project root directory.
 """
@@ -35,6 +38,9 @@ from data.data_loader import load_nascar_data
 from data.feature_engineering import create_nascar_features
 from models.clustering import run_clustering_analysis
 from models.lstm_model import NASCARLSTMPredictor
+from models.finish_position_predictor import FinishPositionPredictor
+from models.driver_volatility_predictor import DriverVolatilityPredictor
+from models.win_probability_predictor import WinProbabilityPredictor
 
 
 def setup_logging(log_level: str = 'INFO') -> logging.Logger:
@@ -76,11 +82,14 @@ def check_project_setup() -> bool:
     Verify that the project is properly set up.
     
     Returns:
-        bool: True if setup is complete
+        bool: True if setup is valid
     """
     required_dirs = [
-        'config', 'src', 'src/data', 'src/models', 'src/visualization',
-        'data', 'data/raw', 'data/processed', 'data/models', 'outputs'
+        'data/raw',
+        'data/processed', 
+        'data/models',
+        'src/models',
+        'outputs'
     ]
     
     missing_dirs = []
@@ -89,261 +98,293 @@ def check_project_setup() -> bool:
             missing_dirs.append(dir_path)
     
     if missing_dirs:
-        print("❌ Missing required directories:")
-        for dir_path in missing_dirs:
-            print(f"   {dir_path}")
-        print("\nCreate them with: mkdir -p " + " ".join(missing_dirs))
+        print(f"❌ Missing directories: {missing_dirs}")
+        print("Please create these directories before running the script.")
         return False
     
-    # Check for config file
-    if not Path('config/config.yaml').exists():
-        print("❌ Missing config/config.yaml")
-        return False
+    # Check for raw data files (prefer Parquet, fallback to CSV)
+    parquet_file = Path('data/raw/cup_series.parquet')
+    csv_file = Path('data/raw/cup_series.csv')
     
-    return True
+    if parquet_file.exists():
+        print(f"✅ Found NASCAR data: {parquet_file} (Parquet - optimal)")
+        return True
+    elif csv_file.exists():
+        print(f"✅ Found NASCAR data: {csv_file} (CSV - fallback)")
+        print("💡 Consider converting to Parquet format for faster loading")
+        return True
+    else:
+        print("❌ Missing raw data files:")
+        print(f"   Primary: {parquet_file}")
+        print(f"   Fallback: {csv_file}")
+        print("Please ensure NASCAR data is available in either format.")
+        print("Run 'Rscript scripts/update_data.R' to download and convert data.")
+        return False
 
 
-def run_complete_analysis(config_path: Optional[str] = None,
-                         skip_data_check: bool = False,
-                         save_all_results: bool = True) -> Dict:
+def run_complete_analysis(skip_data_check: bool = False, save_all_results: bool = True,
+                         predictors_only: bool = False) -> Dict:
     """
-    Run the complete NASCAR driver analysis pipeline.
+    Run the complete NASCAR analysis pipeline.
     
     Args:
-        config_path (Optional[str]): Path to config file
-        skip_data_check (bool): Skip data freshness check
-        save_all_results (bool): Save all intermediate and final results
+        skip_data_check: Skip data validation
+        save_all_results: Save all intermediate results
+        predictors_only: Run only the three new predictors (skip clustering/LSTM)
         
     Returns:
-        Dict: Analysis results and model objects
+        Dict containing all results and models
     """
     logger = logging.getLogger('nascar_training')
-    start_time = time.time()
-    
-    results = {
-        'success': False,
-        'error': None,
-        'data_loader': None,
-        'feature_engineer': None,
-        'clustering_analyzer': None,
-        'lstm_predictor': None,
-        'execution_time': 0
-    }
+    results = {'success': False}
+    total_start_time = time.time()
     
     try:
         # =================================================================
-        # STEP 1: DATA LOADING AND VALIDATION
+        # STEP 1: DATA LOADING
         # =================================================================
-        logger.info("🏁 STEP 1: Loading and validating NASCAR data")
-        print("=" * 60)
-        print("🏁 NASCAR DRIVER CAREER ANALYSIS PIPELINE")
-        print("=" * 60)
-        print("\n📊 STEP 1: Data Loading and Validation")
+        step1_start = time.time()
+        logger.info("🏁 STEP 1: Data loading and validation")
+        print(f"\nSTEP 1: Data Loading")
         print("-" * 40)
         
-        # Load NASCAR data
-        print("Loading NASCAR Cup Series data...")
-        data_loader = load_nascar_data(config_path)
-        results['data_loader'] = data_loader
+        data_loader = load_nascar_data()
         
-        # Check data freshness
         if not skip_data_check:
-            freshness = data_loader.check_data_freshness()
-            print(f"Data status: {freshness.get('status', 'Unknown')}")
-            
-            if freshness.get('days_old', 0) > 30:
-                print("⚠️  Data is more than 30 days old. Consider updating with update_data_from_r()")
+            print("Validating data integrity...")
+            summary = data_loader.get_data_summary()
+            print(f"✅ Loaded {summary['raw_data']['total_records']:,} race records")
+            print(f"✅ {summary['raw_data']['unique_drivers']} unique drivers")
+            print(f"✅ Seasons: {summary['raw_data']['season_range']}")
         
-        # Display data summary
-        summary = data_loader.get_data_summary()
-        print("\nData Summary:")
-        for section, stats in summary.items():
-            print(f"  {section.replace('_', ' ').title()}:")
-            for key, value in stats.items():
-                print(f"    {key.replace('_', ' ').title()}: {value}")
-        
-        step1_time = time.time() - start_time
+        results['data_loader'] = data_loader
+        step1_time = time.time() - step1_start
         print(f"\n✅ Step 1 completed in {step1_time:.1f} seconds")
-        
-        # =================================================================
-        # STEP 2: FEATURE ENGINEERING
-        # =================================================================
-        step2_start = time.time()
-        logger.info("🔧 STEP 2: Advanced feature engineering")
-        print(f"\n🔧 STEP 2: Advanced Feature Engineering")
-        print("-" * 40)
-        
-        # Create engineered features
-        print("Engineering advanced features...")
-        feature_engineer = create_nascar_features(config_path, save_results=save_all_results)
-        results['feature_engineer'] = feature_engineer
-        
-        # Display feature summary
-        feature_summary = feature_engineer.get_feature_summary()
-        print(f"\nFeature Engineering Summary:")
-        print(f"  Total Features: {feature_summary['total_features']}")
-        print(f"  Driver-Seasons: {feature_summary['total_driver_seasons']}")
-        print(f"  Season Range: {feature_summary['season_range']}")
-        
-        print("\n  Feature Categories:")
-        for category, count in feature_summary['feature_categories'].items():
-            if count > 0:
-                print(f"    {category.replace('_', ' ').title()}: {count}")
-        
-        step2_time = time.time() - step2_start
-        print(f"\n✅ Step 2 completed in {step2_time:.1f} seconds")
-        
-        # =================================================================
-        # STEP 3: DRIVER CLUSTERING ANALYSIS
-        # =================================================================
-        step3_start = time.time()
-        logger.info("🏷️ STEP 3: Driver archetype clustering")
-        print(f"\n🏷️ STEP 3: Driver Archetype Clustering")
-        print("-" * 40)
-        
-        # Run clustering analysis
-        print("Analyzing driver archetypes with K-means clustering...")
-        clustering_analyzer = run_clustering_analysis(config_path, save_results=save_all_results)
-        results['clustering_analyzer'] = clustering_analyzer
-        
-        # Display cluster results
-        cluster_analysis = clustering_analyzer.cluster_analysis
-        print(f"\nDiscovered {len(cluster_analysis)} Driver Archetypes:")
-        for idx, row in cluster_analysis.iterrows():
-            print(f"  {row['archetype']}: {row['driver_count']} drivers")
-            print(f"    Avg Wins/Season: {row['avg_wins_per_season']:.2f}")
-            print(f"    Avg Finish: {row['avg_finish']:.1f}")
-            print(f"    Top-5 Rate: {row['avg_top5_rate']:.1%}")
-        
-        step3_time = time.time() - step3_start
-        print(f"\n✅ Step 3 completed in {step3_time:.1f} seconds")
-        
-        # =================================================================
-        # STEP 4: LSTM CAREER PREDICTION
-        # =================================================================
-        step4_start = time.time()
-        logger.info("🧠 STEP 4: LSTM career trajectory prediction")
-        print(f"\n🧠 STEP 4: LSTM Career Trajectory Prediction")
-        print("-" * 40)
-        
-        # Train LSTM model
-        print("Training LSTM neural network for career prediction...")
-        print("This may take several minutes depending on your hardware...")
-        
-        # Train LSTM manually using the class
-        print("Training LSTM neural network...")
-        
-        # Initialize predictor
-        lstm_predictor = NASCARLSTMPredictor()
-        
-        # Load sequences from feature engineer
-        sequences, targets, driver_names = feature_engineer.lstm_sequences
-        lstm_predictor.load_sequences(sequences, targets, driver_names)
-        
-        # Prepare targets
-        prediction_targets = lstm_predictor.prepare_prediction_targets(feature_engineer.engineered_features)
-        
-        # Preprocess data
-        lstm_predictor.preprocess_data(sequences, prediction_targets)
-        
-        # Build and train model
-        lstm_predictor.build_model()
-        history = lstm_predictor.train_model()
-        
-        # Save model
-        if save_all_results:
-            lstm_predictor.save_model()
-        results['lstm_predictor'] = lstm_predictor
-        
-        step4_time = time.time() - step4_start
-        print(f"\n✅ Step 4 completed in {step4_time:.1f} seconds")
 
         # =================================================================
-        # STEP 5: FINISHING POSITION PREDICTOR  
+        # STEP 2: FEATURE ENGINEERING  
         # =================================================================
-        step5_start = time.time()
-        logger.info("STEP 5: Finishing position prediction model")
-        print(f"\nSTEP 5: Finishing Position Prediction")
+        step2_start = time.time()
+        logger.info("🔧 STEP 2: Feature engineering")
+        print(f"\nSTEP 2: Feature Engineering")
         print("-" * 40)
         
-        # Train finishing position predictor
-        print("Training linear regression model for finish position prediction...")
+        print("Creating comprehensive driver features...")
+        feature_engineer = create_nascar_features(data_loader)
         
-        # Import the model
-        from models.finish_position_predictor import FinishPositionPredictor
+        feature_summary = feature_engineer.get_feature_summary()
+        print(f"✅ Generated {feature_summary['total_features']} features")
+        print(f"✅ {feature_summary['total_driver_seasons']} driver-seasons")
+        
+        results['feature_engineer'] = feature_engineer
+        step2_time = time.time() - step2_start
+        print(f"\n✅ Step 2 completed in {step2_time:.1f} seconds")
+
+        if not predictors_only:
+            # =================================================================
+            # STEP 3: DRIVER CLUSTERING
+            # =================================================================
+            step3_start = time.time()
+            logger.info("🏷️ STEP 3: Driver archetype clustering")
+            print(f"\nSTEP 3: Driver Archetype Clustering")
+            print("-" * 40)
+            
+            print("Analyzing driver performance patterns...")
+            clustering_analyzer = run_clustering_analysis(feature_engineer.engineered_features)
+            
+            print(f"✅ Identified {len(clustering_analyzer.cluster_analysis)} driver archetypes")
+            for idx, row in clustering_analyzer.cluster_analysis.iterrows():
+                print(f"  - {row['archetype']}: {row['driver_count']} drivers")
+            
+            results['clustering_analyzer'] = clustering_analyzer
+            step3_time = time.time() - step3_start
+            print(f"\n✅ Step 3 completed in {step3_time:.1f} seconds")
+
+            # =================================================================
+            # STEP 4: LSTM CAREER PREDICTION
+            # =================================================================
+            step4_start = time.time()
+            logger.info("🧠 STEP 4: LSTM career trajectory prediction")
+            print(f"\nSTEP 4: LSTM Career Trajectory Prediction")
+            print("-" * 40)
+            
+            print("Training neural network for career prediction...")
+            lstm_predictor = NASCARLSTMPredictor()
+            
+            # Load sequences from feature engineer
+            sequences, targets, driver_names = feature_engineer.lstm_sequences
+            lstm_predictor.load_sequences(sequences, targets, driver_names)
+            
+            # Prepare targets
+            prediction_targets = lstm_predictor.prepare_prediction_targets(feature_engineer.engineered_features)
+            
+            # Preprocess data
+            lstm_predictor.preprocess_data(sequences, prediction_targets)
+            
+            # Build and train model
+            lstm_predictor.build_model()
+            history = lstm_predictor.train_model()
+            
+            # Save model
+            if save_all_results:
+                lstm_predictor.save_model()
+            results['lstm_predictor'] = lstm_predictor
+            
+            step4_time = time.time() - step4_start
+            print(f"\n✅ Step 4 completed in {step4_time:.1f} seconds")
+
+        # =================================================================
+        # STEP 5: FINISH POSITION PREDICTOR  
+        # =================================================================
+        step5_start = time.time()
+        logger.info("🎯 STEP 5: Finish position prediction model")
+        print(f"\nSTEP 5: Finish Position Prediction")
+        print("-" * 40)
+        
+        print("Training linear regression model for finish position prediction...")
         
         # Initialize predictor
         finish_predictor = FinishPositionPredictor()
         
         # Get the raw NASCAR data for training
-        raw_data = data_loader.df  # This should be your full cup_series DataFrame
+        raw_data = data_loader.df
         
         # Train the model
         print("Creating training examples from NASCAR race data...")
-        training_results = finish_predictor.train(
+        finish_training_results = finish_predictor.train(
             raw_data, 
-            min_history_races=10,
-            seasons_to_predict=list(range(2015, 2025))  # Use recent seasons
+            min_history_races=10,  # Fixed parameter name
+            seasons_to_predict=[2020, 2021, 2022, 2023, 2024]
         )
         
+        print(f"✅ Finish Position Model trained")
+        print(f"  - Training examples: {finish_training_results['training_samples']:,}")
+        print(f"  - Validation MAE: {finish_training_results['val_mae']:.2f} positions")
+        print(f"  - Validation R²: {finish_training_results['val_r2']:.3f}")
+        
+        # Save model
+        if save_all_results:
+            finish_predictor.save('data/models/finish_position_predictor.pkl')
+        
         results['finish_predictor'] = finish_predictor
-        results['finish_training_results'] = training_results
-        
-        # Display results
-        print(f"\nFinishing Position Predictor Results:")
-        print(f"  Training Examples: {training_results['training_samples']}")
-        print(f"  Validation Examples: {training_results['validation_samples']}")
-        print(f"  Drivers Analyzed: {training_results['drivers_count']}")
-        print(f"  Validation MAE: {training_results['val_mae']:.2f} positions")
-        print(f"  Validation R²: {training_results['val_r2']:.3f}")
-        
-        print(f"\n  Top Feature Importance:")
-        feature_importance = training_results['feature_importance']
-        sorted_features = sorted(feature_importance.items(), key=lambda x: abs(x[1]), reverse=True)
-        for feature, importance in sorted_features[:5]:
-            print(f"    {feature}: {importance:.3f}")
-        
-        # Save the model
-        model_path = Path('data/models/finish_position_predictor.pkl')
-        finish_predictor.save(str(model_path))
-        print(f"  Model saved to: {model_path}")
+        results['finish_training_results'] = finish_training_results
         
         step5_time = time.time() - step5_start
         print(f"\n✅ Step 5 completed in {step5_time:.1f} seconds")
-        
+
         # =================================================================
-        # STEP 6: MODEL EXAMPLES AND DEMONSTRATIONS
+        # STEP 6: DRIVER VOLATILITY PREDICTOR  
         # =================================================================
         step6_start = time.time()
-        logger.info("📊 STEP 6: Model demonstrations and examples")
-        print(f"\n📊 STEP 6: Model Demonstrations")
+        logger.info("📊 STEP 6: Driver volatility prediction model")
+        print(f"\nSTEP 6: Driver Volatility Prediction")
         print("-" * 40)
         
-        # Demonstrate finish position predictor with popular drivers
-        popular_drivers = ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Joey Logano", "Martin Truex Jr."]
+        print("Training random forest model for performance volatility prediction...")
         
-        print("Finish Position Prediction Examples:")
-        for driver in popular_drivers:
-            try:
-                prediction = finish_predictor.predict_for_driver(
-                    raw_data, 
-                    driver, 
-                    next_track_name="Charlotte Motor Speedway",
-                    next_track_length=1.5
-                )
-                print(f"  {driver}:")
-                print(f"    Predicted finish: {prediction['predicted_finish']}")
-                print(f"    Confidence: {prediction['confidence']:.1%}")
-                print(f"    Position improvement: {prediction['position_improvement']:+d}")
-                
-            except Exception as e:
-                print(f"    Could not predict for {driver}: {str(e)}")
+        # Initialize predictor
+        volatility_predictor = DriverVolatilityPredictor()
+        
+        # Train the model
+        print("Creating training examples from NASCAR race data...")
+        volatility_training_results = volatility_predictor.train(
+            raw_data,
+            min_history_races=15,  # Fixed parameter name
+            seasons_to_predict=[2020, 2021, 2022, 2023, 2024]
+        )
+        
+        print(f"✅ Volatility Model trained")
+        print(f"  - Training examples: {volatility_training_results['training_samples']:,}")
+        print(f"  - Validation MAE: {volatility_training_results['val_mae']:.2f} volatility units")
+        print(f"  - Validation R²: {volatility_training_results['val_r2']:.3f}")
+        
+        # Save model
+        if save_all_results:
+            volatility_predictor.save('data/models/driver_volatility_predictor.pkl')
+        
+        results['volatility_predictor'] = volatility_predictor
+        results['volatility_training_results'] = volatility_training_results
         
         step6_time = time.time() - step6_start
         print(f"\n✅ Step 6 completed in {step6_time:.1f} seconds")
 
-def generate_summary_report(results: Dict, output_path: Path) -> None:
-    """Generate comprehensive summary report."""
+        # =================================================================
+        # STEP 7: WIN PROBABILITY PREDICTOR  
+        # =================================================================
+        step7_start = time.time()
+        logger.info("🏆 STEP 7: Win probability prediction model")
+        print(f"\nSTEP 7: Win Probability Prediction")
+        print("-" * 40)
+        
+        print("Training logistic regression model for win probability prediction...")
+        
+        # Initialize predictor
+        win_predictor = WinProbabilityPredictor()
+        
+        # Train the model
+        print("Creating training examples from NASCAR race data...")
+        win_training_results = win_predictor.train(
+            raw_data,
+            min_history_races=10,  # Fixed parameter name
+            seasons_to_predict=[2020, 2021, 2022, 2023, 2024]
+        )
+        
+        print(f"✅ Win Probability Model trained")
+        print(f"  - Training examples: {win_training_results['training_samples']:,}")
+        print(f"  - Validation Accuracy: {win_training_results['val_accuracy']:.3f}")
+        print(f"  - Validation AUC: {win_training_results['val_auc']:.3f}")
+        print(f"  - Validation Precision: {win_training_results['val_precision']:.3f}")
+        
+        # Save model
+        if save_all_results:
+            win_predictor.save('data/models/win_probability_predictor.pkl')
+        
+        results['win_predictor'] = win_predictor
+        results['win_training_results'] = win_training_results
+        
+        step7_time = time.time() - step7_start
+        print(f"\n✅ Step 7 completed in {step7_time:.1f} seconds")
+
+        # =================================================================
+        # FINAL STEPS: SAVE RESULTS AND GENERATE REPORTS
+        # =================================================================
+        total_time = time.time() - total_start_time
+        
+        if save_all_results:
+            print(f"\nSaving comprehensive results...")
+            save_training_results(results)
+        
+        results['success'] = True
+        results['total_time'] = total_time
+        
+        print(f"\n🎉 TRAINING PIPELINE COMPLETED SUCCESSFULLY!")
+        print(f"⏱️  Total time: {total_time:.1f} seconds ({total_time/60:.1f} minutes)")
+        print(f"📊 All models trained and ready for deployment")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Pipeline failed at step: {str(e)}")
+        logger.error("Pipeline failed: " + str(e))
+        results['error'] = str(e)
+        results['success'] = False
+        return results
+
+
+def save_training_results(results: Dict) -> None:
+    """
+    Save comprehensive training results and generate reports.
+    
+    Args:
+        results: Dictionary containing all training results
+    """
+    print("\nGenerating comprehensive training report...")
+    
+    # Create outputs directory
+    output_path = Path('outputs')
+    output_path.mkdir(exist_ok=True)
+    
+    # Generate summary report
     report_path = output_path / 'training_summary.txt'
     
     with open(report_path, 'w') as f:
@@ -352,7 +393,7 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
         f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         
         # Data info
-        if results['data_loader']:
+        if results.get('data_loader'):
             summary = results['data_loader'].get_data_summary()
             f.write("DATA SUMMARY\n")
             f.write("-" * 15 + "\n")
@@ -362,7 +403,7 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
             f.write(f"Driver-Seasons: {summary['aggregated']['driver_seasons']}\n\n")
         
         # Feature engineering info
-        if results['feature_engineer']:
+        if results.get('feature_engineer'):
             feature_summary = results['feature_engineer'].get_feature_summary()
             f.write("FEATURE ENGINEERING\n")
             f.write("-" * 20 + "\n")
@@ -370,8 +411,8 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
             f.write(f"Driver-Seasons: {feature_summary['total_driver_seasons']}\n")
             f.write(f"Season Range: {feature_summary['season_range']}\n\n")
         
-        # Clustering info
-        if results['clustering_analyzer']:
+        # Clustering info (if run)
+        if results.get('clustering_analyzer'):
             cluster_analysis = results['clustering_analyzer'].cluster_analysis
             f.write("DRIVER ARCHETYPES (CLUSTERING)\n")
             f.write("-" * 35 + "\n")
@@ -385,8 +426,8 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
                 f.write(f"  Top-5 Rate: {row['avg_top5_rate']:.1%}\n")
                 f.write(f"  Representatives: {row['representative_drivers']}\n\n")
         
-        # LSTM model info
-        if results['lstm_predictor']:
+        # LSTM model info (if run)
+        if results.get('lstm_predictor'):
             f.write("LSTM CAREER PREDICTION MODEL\n")
             f.write("-" * 35 + "\n")
             f.write(f"Training Sequences: {len(results['lstm_predictor'].X_train)}\n")
@@ -395,10 +436,10 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
             f.write(f"Sequence Length: {results['lstm_predictor'].lstm_config['sequence_length']} seasons\n")
             f.write(f"Hidden Units: {results['lstm_predictor'].lstm_config['hidden_units']}\n\n")
         
-        # Finishing Position Predictor info
+        # Finish Position Predictor info
         if results.get('finish_predictor') and results.get('finish_training_results'):
             training_results = results['finish_training_results']
-            f.write("FINISHING POSITION PREDICTOR\n")
+            f.write("FINISH POSITION PREDICTOR\n")
             f.write("-" * 35 + "\n")
             f.write(f"Model Type: Linear Regression\n")
             f.write(f"Training Examples: {training_results['training_samples']}\n")
@@ -410,12 +451,95 @@ def generate_summary_report(results: Dict, output_path: Path) -> None:
             
             f.write("Top Features by Importance:\n")
             feature_importance = training_results['feature_importance']
-            sorted_features = sorted(feature_importance.items(), key=lambda x: abs(x[1]), reverse=True)
+            sorted_features = sorted(feature_importance.items(), key=lambda x: abs(x[1]), reverse=True)[:10]
             for feature, importance in sorted_features:
                 f.write(f"  {feature}: {importance:.3f}\n")
             f.write("\n")
+
+        # Driver Volatility Predictor info
+        if results.get('volatility_predictor') and results.get('volatility_training_results'):
+            training_results = results['volatility_training_results']
+            f.write("DRIVER VOLATILITY PREDICTOR\n")
+            f.write("-" * 35 + "\n")
+            f.write(f"Model Type: Random Forest Regression\n")
+            f.write(f"Training Examples: {training_results['training_samples']}\n")
+            f.write(f"Validation Examples: {training_results['validation_samples']}\n")
+            f.write(f"Drivers Analyzed: {training_results['drivers_count']}\n")
+            f.write(f"Validation MAE: {training_results['val_mae']:.2f} volatility units\n")
+            f.write(f"Validation R²: {training_results['val_r2']:.3f}\n")
+            f.write(f"Validation RMSE: {training_results['val_rmse']:.2f}\n\n")
+            
+            f.write("Top Features by Importance:\n")
+            feature_importance = training_results['feature_importance']
+            sorted_features = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:10]
+            for feature, importance in sorted_features:
+                f.write(f"  {feature}: {importance:.3f}\n")
+            f.write("\n")
+
+        # Win Probability Predictor info
+        if results.get('win_predictor') and results.get('win_training_results'):
+            training_results = results['win_training_results']
+            f.write("WIN PROBABILITY PREDICTOR\n")
+            f.write("-" * 35 + "\n")
+            f.write(f"Model Type: Logistic Regression\n")
+            f.write(f"Training Examples: {training_results['training_samples']}\n")
+            f.write(f"Validation Examples: {training_results['validation_samples']}\n")
+            f.write(f"Drivers Analyzed: {training_results['drivers_count']}\n")
+            f.write(f"Validation Accuracy: {training_results['val_accuracy']:.3f}\n")
+            f.write(f"Validation AUC: {training_results['val_auc']:.3f}\n")
+            f.write(f"Validation Precision: {training_results['val_precision']:.3f}\n")
+            f.write(f"Validation Recall: {training_results['val_recall']:.3f}\n")
+            f.write(f"Validation F1: {training_results['val_f1']:.3f}\n\n")
+            
+            # Win rate in training data
+            win_rate = sum(1 for ex in training_results.get('training_examples', []) if ex.get('won', False))
+            total_examples = len(training_results.get('training_examples', []))
+            if total_examples > 0:
+                f.write(f"Training Win Rate: {win_rate/total_examples:.1%}\n\n")
+
+        # Performance summary
+        f.write("PERFORMANCE SUMMARY\n")
+        f.write("-" * 20 + "\n")
+        if results.get('total_time'):
+            f.write(f"Total Training Time: {results['total_time']:.1f} seconds\n")
+            f.write(f"Total Training Time: {results['total_time']/60:.1f} minutes\n")
+        f.write(f"Training Status: {'SUCCESS' if results.get('success') else 'FAILED'}\n")
+        if not results.get('success') and results.get('error'):
+            f.write(f"Error: {results['error']}\n")
     
-    print(f"  Summary report saved to {report_path}")
+    print(f"  📄 Summary report saved to {report_path}")
+    
+    # Save model metadata
+    models_info = {}
+    for model_key in ['finish_predictor', 'volatility_predictor', 'win_predictor']:
+        if results.get(model_key):
+            try:
+                # Try to get model info if method exists
+                if hasattr(results[model_key], 'get_model_info'):
+                    models_info[model_key] = results[model_key].get_model_info()
+                else:
+                    # Create basic info if method doesn't exist
+                    model_names = {
+                        'finish_predictor': 'Finish Position Predictor',
+                        'volatility_predictor': 'Driver Volatility Predictor', 
+                        'win_predictor': 'Win Probability Predictor'
+                    }
+                    models_info[model_key] = {
+                        'name': model_names[model_key],
+                        'is_trained': getattr(results[model_key], 'is_trained', True),
+                        'features': getattr(results[model_key], 'feature_names', []),
+                        'training_metrics': getattr(results[model_key], 'training_metrics', {})
+                    }
+            except Exception as e:
+                print(f"  ⚠️  Could not get metadata for {model_key}: {e}")
+                continue
+    
+    if models_info:
+        import pickle
+        with open(output_path / 'models_metadata.pkl', 'wb') as f:
+            pickle.dump(models_info, f)
+        print(f"  🔧 Model metadata saved to {output_path / 'models_metadata.pkl'}")
+
 
 def main():
     """Main execution function."""
@@ -430,39 +554,54 @@ def main():
     # Setup logging
     logger = setup_logging()
     
-    # Parse command line arguments (basic)
+    # Parse command line arguments
     skip_data_check = '--skip-data-check' in sys.argv
     no_save = '--no-save' in sys.argv
-    finish_only = '--finish-predictor-only' in sys.argv  # New flag for testing
+    predictors_only = '--predictors-only' in sys.argv  # New flag to skip clustering/LSTM
     
     # Run analysis
     try:
         results = run_complete_analysis(
             skip_data_check=skip_data_check,
             save_all_results=not no_save,
-            finish_predictor_only=finish_only  # Pass flag through
+            predictors_only=predictors_only
         )
         
         if results['success']:
             print("\n🎉 Analysis completed successfully!")
             print("Check the 'outputs' directory for detailed results.")
-            print("🎯 Finishing Position Predictor ready for FastAPI integration!")
-            logger.info("Pipeline completed successfully")
-            sys.exit(0)
+            
+            # Show what models are available
+            models_trained = []
+            if results.get('finish_predictor'):
+                models_trained.append("✅ Finish Position Predictor")
+            if results.get('volatility_predictor'):
+                models_trained.append("✅ Driver Volatility Predictor")
+            if results.get('win_predictor'):
+                models_trained.append("✅ Win Probability Predictor")
+            if results.get('clustering_analyzer'):
+                models_trained.append("✅ Driver Clustering Analysis")
+            if results.get('lstm_predictor'):
+                models_trained.append("✅ LSTM Career Trajectory Predictor")
+            
+            print("\nModels ready for deployment:")
+            for model in models_trained:
+                print(f"  {model}")
+            
+            print("\n🎯 All predictors ready for FastAPI integration!")
+            
         else:
-            print(f"\n❌ Analysis failed: {results['error']}")
-            logger.error(f"Pipeline failed: {results['error']}")
+            print(f"\n❌ Analysis failed: {results.get('error', 'Unknown error')}")
             sys.exit(1)
             
     except KeyboardInterrupt:
-        print("\n⚠️ Analysis interrupted by user")
-        logger.info("Pipeline interrupted by user")
+        print("\n⏹️  Training interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ Unexpected error: {e}")
-        logger.error(f"Unexpected error: {e}", exc_info=True)
+        logger.error(f"Unexpected error: {str(e)}")
+        print(f"\n💥 Unexpected error: {str(e)}")
         sys.exit(1)
-        
-        
+
+
 if __name__ == "__main__":
     main()

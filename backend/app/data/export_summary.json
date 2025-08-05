@@ -1,13 +1,13 @@
 {
   "export_completed": true,
-  "export_timestamp": "2025-07-28T10:16:58.404548",
+  "export_timestamp": "2025-08-05T17:14:43.883010",
   "files_created": [
     "drivers.json",
     "archetypes.json",
     "predictions.json"
   ],
   "stats": {
-    "total_drivers": 531,
+    "total_drivers": 3000,
     "total_archetypes": 6
   }
 }
