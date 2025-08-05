@@ -257,186 +257,128 @@ def run_complete_analysis(config_path: Optional[str] = None,
         
         step4_time = time.time() - step4_start
         print(f"\n✅ Step 4 completed in {step4_time:.1f} seconds")
-        
+
         # =================================================================
-        # STEP 5: MODEL EVALUATION AND EXAMPLES
+        # STEP 5: FINISHING POSITION PREDICTOR  
         # =================================================================
         step5_start = time.time()
-        logger.info("📈 STEP 5: Model evaluation and examples")
-        print(f"\n📈 STEP 5: Model Evaluation and Examples")
+        logger.info("STEP 5: Finishing position prediction model")
+        print(f"\nSTEP 5: Finishing Position Prediction")
         print("-" * 40)
         
-        # Generate example predictions
-        print("Generating example career predictions...")
+        # Train finishing position predictor
+        print("Training linear regression model for finish position prediction...")
         
-        example_drivers = ['Kyle Larson', 'Chase Elliott', 'Denny Hamlin', 'William Byron', 'Ryan Blaney']
-        prediction_examples = []
+        # Import the model
+        from models.finish_position_predictor import FinishPositionPredictor
         
-        for driver in example_drivers:
-            try:
-                # Skip individual predictions for now - function not implemented
-                prediction = {'error': 'Individual prediction function not implemented'}
-                
-                if 'error' not in prediction:
-                    prediction_examples.append(prediction)
-                    
-                    print(f"\n{driver}:")
-                    print(f"  Current Season: {prediction['current_season']}")
-                    print(f"  Career Seasons: {prediction['career_seasons']}")
-                    print(f"  Current Stats: {prediction['current_stats']['avg_finish']:.1f} avg finish, {prediction['current_stats']['win_rate']:.1%} win rate")
-                    print(f"  Performance Trend: {prediction['interpretation']['performance_trend']}")
-                    print(f"  Career Stage: {prediction['interpretation']['career_stage']}")
-                    
-                    # Show clustering archetype
-                    try:
-                        archetype_info = clustering_analyzer.get_driver_archetype(driver)
-                        if 'error' not in archetype_info:
-                            print(f"  Driver Archetype: {archetype_info['archetype']}")
-                    except:
-                        pass
-                else:
-                    print(f"\n{driver}: {prediction['error']}")
-                    
-            except Exception as e:
-                logger.warning(f"Failed to predict for {driver}: {e}")
-                print(f"\n{driver}: Prediction failed - {e}")
+        # Initialize predictor
+        finish_predictor = FinishPositionPredictor()
+        
+        # Get the raw NASCAR data for training
+        raw_data = data_loader.df  # This should be your full cup_series DataFrame
+        
+        # Train the model
+        print("Creating training examples from NASCAR race data...")
+        training_results = finish_predictor.train(
+            raw_data, 
+            min_history_races=10,
+            seasons_to_predict=list(range(2015, 2025))  # Use recent seasons
+        )
+        
+        results['finish_predictor'] = finish_predictor
+        results['finish_training_results'] = training_results
+        
+        # Display results
+        print(f"\nFinishing Position Predictor Results:")
+        print(f"  Training Examples: {training_results['training_samples']}")
+        print(f"  Validation Examples: {training_results['validation_samples']}")
+        print(f"  Drivers Analyzed: {training_results['drivers_count']}")
+        print(f"  Validation MAE: {training_results['val_mae']:.2f} positions")
+        print(f"  Validation R²: {training_results['val_r2']:.3f}")
+        
+        print(f"\n  Top Feature Importance:")
+        feature_importance = training_results['feature_importance']
+        sorted_features = sorted(feature_importance.items(), key=lambda x: abs(x[1]), reverse=True)
+        for feature, importance in sorted_features[:5]:
+            print(f"    {feature}: {importance:.3f}")
+        
+        # Save the model
+        model_path = Path('data/models/finish_position_predictor.pkl')
+        finish_predictor.save(str(model_path))
+        print(f"  Model saved to: {model_path}")
         
         step5_time = time.time() - step5_start
         print(f"\n✅ Step 5 completed in {step5_time:.1f} seconds")
         
         # =================================================================
-        # STEP 6: RESULTS EXPORT AND REPORTING
+        # STEP 6: MODEL EXAMPLES AND DEMONSTRATIONS
         # =================================================================
-        if save_all_results:
-            step6_start = time.time()
-            logger.info("💾 STEP 6: Exporting results and reports")
-            print(f"\n💾 STEP 6: Results Export and Reporting")
-            print("-" * 40)
-            
-            # Save comprehensive results
-            print("Saving comprehensive analysis results...")
-            save_comprehensive_results(results, prediction_examples)
-            
-            step6_time = time.time() - step6_start
-            print(f"\n✅ Step 6 completed in {step6_time:.1f} seconds")
+        step6_start = time.time()
+        logger.info("📊 STEP 6: Model demonstrations and examples")
+        print(f"\n📊 STEP 6: Model Demonstrations")
+        print("-" * 40)
         
-        # =================================================================
-        # COMPLETION SUMMARY
-        # =================================================================
-        total_time = time.time() - start_time
-        results['execution_time'] = total_time
-        results['success'] = True
+        # Demonstrate finish position predictor with popular drivers
+        popular_drivers = ["Kyle Larson", "Chase Elliott", "Denny Hamlin", "Joey Logano", "Martin Truex Jr."]
         
-        print(f"\n🎉 ANALYSIS PIPELINE COMPLETED SUCCESSFULLY!")
-        print("=" * 60)
-        print(f"Total Execution Time: {total_time:.1f} seconds ({total_time/60:.1f} minutes)")
-        print(f"Data: {summary['driver_seasons']['total_driver_seasons']} driver-seasons")
-        print(f"Features: {feature_summary['total_features']} engineered features")
-        print(f"Clusters: {len(cluster_analysis)} driver archetypes")
-        print(f"LSTM: {len(lstm_predictor.X_train)} training sequences")
+        print("Finish Position Prediction Examples:")
+        for driver in popular_drivers:
+            try:
+                prediction = finish_predictor.predict_for_driver(
+                    raw_data, 
+                    driver, 
+                    next_track_name="Charlotte Motor Speedway",
+                    next_track_length=1.5
+                )
+                print(f"  {driver}:")
+                print(f"    Predicted finish: {prediction['predicted_finish']}")
+                print(f"    Confidence: {prediction['confidence']:.1%}")
+                print(f"    Position improvement: {prediction['position_improvement']:+d}")
+                
+            except Exception as e:
+                print(f"    Could not predict for {driver}: {str(e)}")
         
-        logger.info(f"Analysis pipeline completed successfully in {total_time:.1f} seconds")
-        
-        return results
-        
-    except Exception as e:
-        error_msg = f"Pipeline failed at step: {e}"
-        logger.error(error_msg, exc_info=True)
-        results['error'] = error_msg
-        print(f"\n❌ PIPELINE FAILED: {error_msg}")
-        return results
+        step6_time = time.time() - step6_start
+        print(f"\n✅ Step 6 completed in {step6_time:.1f} seconds")
 
-
-def save_comprehensive_results(results: Dict, prediction_examples: List[Dict]) -> None:
-    """
-    Save comprehensive analysis results to files.
+def generate_summary_report(results: Dict, output_path: Path) -> None:
+    """Generate comprehensive summary report."""
+    report_path = output_path / 'training_summary.txt'
     
-    Args:
-        results (Dict): Analysis results
-        prediction_examples (List[Dict]): Example predictions
-    """
-    outputs_dir = Path('outputs')
-    outputs_dir.mkdir(exist_ok=True)
-    
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
-    # Save prediction examples
-    if prediction_examples:
-        predictions_df = pd.DataFrame(prediction_examples)
-        predictions_path = outputs_dir / f'career_predictions_{timestamp}.csv'
-        predictions_df.to_csv(predictions_path, index=False)
-        print(f"  Career predictions saved to {predictions_path}")
-    
-    # Save cluster analysis
-    if results['clustering_analyzer'] is not None:
-        cluster_path = outputs_dir / f'cluster_analysis_{timestamp}.csv'
-        results['clustering_analyzer'].cluster_analysis.to_csv(cluster_path, index=False)
-        print(f"  Cluster analysis saved to {cluster_path}")
-    
-    # Save model evaluation
-    if results['lstm_predictor'] is not None:
-        try:
-            evaluation = results['lstm_predictor'].evaluate_model()
-            eval_df = pd.DataFrame(evaluation).T
-            eval_path = outputs_dir / f'lstm_evaluation_{timestamp}.csv'
-            eval_df.to_csv(eval_path)
-            print(f"  LSTM evaluation saved to {eval_path}")
-        except:
-            pass
-    
-    # Create summary report
-    create_summary_report(results, outputs_dir / f'analysis_summary_{timestamp}.txt')
-
-
-def create_summary_report(results: Dict, report_path: Path) -> None:
-    """
-    Create a comprehensive text summary report.
-    
-    Args:
-        results (Dict): Analysis results
-        report_path (Path): Path to save report
-    """
     with open(report_path, 'w') as f:
-        f.write("NASCAR DRIVER CAREER ANALYSIS REPORT\n")
+        f.write("NASCAR DRIVER ANALYSIS TRAINING SUMMARY\n")
         f.write("=" * 50 + "\n")
-        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"Execution Time: {results['execution_time']:.1f} seconds\n\n")
+        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         
-        # Data summary
+        # Data info
         if results['data_loader']:
             summary = results['data_loader'].get_data_summary()
             f.write("DATA SUMMARY\n")
-            f.write("-" * 20 + "\n")
-            for section, stats in summary.items():
-                f.write(f"{section.replace('_', ' ').title()}:\n")
-                for key, value in stats.items():
-                    f.write(f"  {key.replace('_', ' ').title()}: {value}\n")
-                f.write("\n")
+            f.write("-" * 15 + "\n")
+            f.write(f"Total Records: {summary['raw_data']['total_records']}\n")
+            f.write(f"Seasons: {summary['raw_data']['season_range']}\n")
+            f.write(f"Unique Drivers: {summary['raw_data']['unique_drivers']}\n")
+            f.write(f"Driver-Seasons: {summary['aggregated']['driver_seasons']}\n\n")
         
-        # Feature engineering summary
+        # Feature engineering info
         if results['feature_engineer']:
             feature_summary = results['feature_engineer'].get_feature_summary()
-            f.write("FEATURE ENGINEERING SUMMARY\n")
-            f.write("-" * 30 + "\n")
+            f.write("FEATURE ENGINEERING\n")
+            f.write("-" * 20 + "\n")
             f.write(f"Total Features: {feature_summary['total_features']}\n")
             f.write(f"Driver-Seasons: {feature_summary['total_driver_seasons']}\n")
             f.write(f"Season Range: {feature_summary['season_range']}\n\n")
-            
-            f.write("Feature Categories:\n")
-            for category, count in feature_summary['feature_categories'].items():
-                if count > 0:
-                    f.write(f"  {category.replace('_', ' ').title()}: {count}\n")
-            f.write("\n")
         
-        # Clustering results
+        # Clustering info
         if results['clustering_analyzer']:
             cluster_analysis = results['clustering_analyzer'].cluster_analysis
-            f.write("DRIVER ARCHETYPE CLUSTERING\n")
-            f.write("-" * 30 + "\n")
+            f.write("DRIVER ARCHETYPES (CLUSTERING)\n")
+            f.write("-" * 35 + "\n")
             f.write(f"Number of Clusters: {len(cluster_analysis)}\n\n")
             
             for idx, row in cluster_analysis.iterrows():
-                f.write(f"{row['archetype']}:\n")
+                f.write(f"{row['archetype'].upper()}\n")
                 f.write(f"  Drivers: {row['driver_count']}\n")
                 f.write(f"  Avg Wins/Season: {row['avg_wins_per_season']:.2f}\n")
                 f.write(f"  Avg Finish: {row['avg_finish']:.1f}\n")
@@ -452,9 +394,28 @@ def create_summary_report(results: Dict, report_path: Path) -> None:
             f.write(f"Test Sequences: {len(results['lstm_predictor'].X_test)}\n")
             f.write(f"Sequence Length: {results['lstm_predictor'].lstm_config['sequence_length']} seasons\n")
             f.write(f"Hidden Units: {results['lstm_predictor'].lstm_config['hidden_units']}\n\n")
+        
+        # Finishing Position Predictor info
+        if results.get('finish_predictor') and results.get('finish_training_results'):
+            training_results = results['finish_training_results']
+            f.write("FINISHING POSITION PREDICTOR\n")
+            f.write("-" * 35 + "\n")
+            f.write(f"Model Type: Linear Regression\n")
+            f.write(f"Training Examples: {training_results['training_samples']}\n")
+            f.write(f"Validation Examples: {training_results['validation_samples']}\n")
+            f.write(f"Drivers Analyzed: {training_results['drivers_count']}\n")
+            f.write(f"Validation MAE: {training_results['val_mae']:.2f} positions\n")
+            f.write(f"Validation R²: {training_results['val_r2']:.3f}\n")
+            f.write(f"Seasons Used: {training_results['seasons_used'][0]}-{training_results['seasons_used'][-1]}\n\n")
+            
+            f.write("Top Features by Importance:\n")
+            feature_importance = training_results['feature_importance']
+            sorted_features = sorted(feature_importance.items(), key=lambda x: abs(x[1]), reverse=True)
+            for feature, importance in sorted_features:
+                f.write(f"  {feature}: {importance:.3f}\n")
+            f.write("\n")
     
     print(f"  Summary report saved to {report_path}")
-
 
 def main():
     """Main execution function."""
@@ -472,17 +433,20 @@ def main():
     # Parse command line arguments (basic)
     skip_data_check = '--skip-data-check' in sys.argv
     no_save = '--no-save' in sys.argv
+    finish_only = '--finish-predictor-only' in sys.argv  # New flag for testing
     
     # Run analysis
     try:
         results = run_complete_analysis(
             skip_data_check=skip_data_check,
-            save_all_results=not no_save
+            save_all_results=not no_save,
+            finish_predictor_only=finish_only  # Pass flag through
         )
         
         if results['success']:
             print("\n🎉 Analysis completed successfully!")
             print("Check the 'outputs' directory for detailed results.")
+            print("🎯 Finishing Position Predictor ready for FastAPI integration!")
             logger.info("Pipeline completed successfully")
             sys.exit(0)
         else:
@@ -498,7 +462,7 @@ def main():
         print(f"\n❌ Unexpected error: {e}")
         logger.error(f"Unexpected error: {e}", exc_info=True)
         sys.exit(1)
-
-
+        
+        
 if __name__ == "__main__":
     main()

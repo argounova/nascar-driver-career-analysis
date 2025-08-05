@@ -196,51 +196,105 @@ class FinishPositionPredictor:
         
         return weighted_sum / total_weight if total_weight > 0 else 20.0
     
-    def train(self, data: pd.DataFrame, target_column: str = 'next_race_finish', 
-              track_type_column: str = 'track_type') -> Dict:
+    def train(self, cup_series_df: pd.DataFrame, min_history_races: int = 10, 
+              seasons_to_predict: List[int] = None) -> Dict:
         """
-        Train the model with historical data
+        Train the model with NASCAR Cup Series data
         
         Args:
-            data: DataFrame with driver histories and target finish positions
-            target_column: Column name containing the target finish positions
-            track_type_column: Column name containing track type information
+            cup_series_df: DataFrame with NASCAR Cup Series race data
+            min_history_races: Minimum races needed to make a prediction
+            seasons_to_predict: List of seasons to use for training targets (default: 2010-2024)
             
         Returns:
             Dictionary with training metrics
         """
-        self.logger.info("Training finishing position predictor...")
+        self.logger.info("Training finishing position predictor with NASCAR data...")
         
-        if data.empty:
-            raise ValueError("Training data is required")
+        if cup_series_df.empty:
+            raise ValueError("NASCAR data is required")
+        
+        # Store reference to full dataset for history extraction
+        self.full_dataset = cup_series_df.copy()
+        
+        # Clean up the data
+        self.full_dataset['Start'] = pd.to_numeric(self.full_dataset['Start'], errors='coerce')
+        self.full_dataset['Finish'] = pd.to_numeric(self.full_dataset['Finish'], errors='coerce')
+        self.full_dataset['Length'] = pd.to_numeric(self.full_dataset['Length'], errors='coerce')
+        
+        # Default seasons for training targets
+        if seasons_to_predict is None:
+            seasons_to_predict = list(range(2010, 2025))
+        
+        self.logger.info(f"Creating training examples from seasons {min(seasons_to_predict)}-{max(seasons_to_predict)}")
         
         features_list = []
         targets = []
+        training_examples = []
         
-        for idx, row in data.iterrows():
-            try:
-                # Assume the race history is stored in a column or can be reconstructed
-                # This would need to be adapted based on your actual data structure
-                driver_history = self._extract_driver_history(row)
-                track_type = row.get(track_type_column, 'intermediate')
-                target_finish = row.get(target_column)
-                
-                if driver_history is not None and pd.notna(target_finish):
-                    feature_vector = self.prepare_features(driver_history, track_type)
-                    features_list.append(feature_vector)
-                    targets.append(target_finish)
-                    
-            except Exception as e:
-                self.logger.warning(f"Skipping row {idx}: {str(e)}")
+        # Group by driver to create training examples
+        for driver_name in self.full_dataset['Driver'].unique():
+            if pd.isna(driver_name) or driver_name == "NA":
                 continue
+                
+            driver_races = self.full_dataset[
+                self.full_dataset['Driver'] == driver_name
+            ].sort_values(['Season', 'Race'])
+            
+            # Skip drivers with insufficient data
+            if len(driver_races) < min_history_races + 5:
+                continue
+            
+            # Create training examples: use race N-k through N-1 to predict race N
+            for i in range(min_history_races, len(driver_races)):
+                target_race = driver_races.iloc[i]
+                
+                # Only use races from our target seasons
+                if target_race['Season'] not in seasons_to_predict:
+                    continue
+                
+                # Skip if target finish is missing
+                if pd.isna(target_race['Finish']):
+                    continue
+                
+                # Get history (races 0 through i-1)
+                history = driver_races.iloc[:i]
+                
+                # Skip if insufficient history
+                if len(history) < min_history_races:
+                    continue
+                
+                try:
+                    # Determine track type for target race
+                    track_type = self._classify_track_type(
+                        target_race['Track'], target_race['Length']
+                    )
+                    
+                    # Prepare features
+                    feature_vector = self.prepare_features(history, track_type)
+                    
+                    features_list.append(feature_vector)
+                    targets.append(target_race['Finish'])
+                    
+                    training_examples.append({
+                        'driver': driver_name,
+                        'target_season': target_race['Season'],
+                        'target_race': target_race['Race'],
+                        'history_races': len(history),
+                        'track_type': track_type
+                    })
+                    
+                except Exception as e:
+                    self.logger.warning(f"Skipping training example for {driver_name}: {str(e)}")
+                    continue
         
         if not features_list:
-            raise ValueError("No valid training examples found")
+            raise ValueError("No valid training examples could be created")
         
         X = np.array(features_list)
         y = np.array(targets)
         
-        self.logger.info(f"Training with {len(X)} examples")
+        self.logger.info(f"Created {len(X)} training examples from {len(set(ex['driver'] for ex in training_examples))} drivers")
         
         # Split into train/validation sets
         X_train, X_val, y_train, y_val = train_test_split(
@@ -266,7 +320,9 @@ class FinishPositionPredictor:
             'val_r2': r2_score(y_val, val_pred),
             'training_samples': len(X_train),
             'validation_samples': len(X_val),
-            'feature_importance': dict(zip(self.feature_names, self.model.coef_))
+            'feature_importance': dict(zip(self.feature_names, self.model.coef_)),
+            'drivers_count': len(set(ex['driver'] for ex in training_examples)),
+            'seasons_used': sorted(seasons_to_predict)
         }
         
         self.logger.info(f"Training complete - Val MAE: {self.training_metrics['val_mae']:.2f}, "
@@ -276,17 +332,42 @@ class FinishPositionPredictor:
     
     def _extract_driver_history(self, row) -> Optional[pd.DataFrame]:
         """
-        Extract driver history from a row - this would need to be customized
-        based on your actual data structure
+        Extract driver history from a row using the NASCAR CSV data structure
         """
-        # This is a placeholder - you'd implement this based on how your data is structured
-        # For example, if you have a 'driver_history' column with serialized data:
-        # return pd.DataFrame(row['driver_history'])
+        # In training, we assume the full dataset is available as self.full_dataset
+        if not hasattr(self, 'full_dataset') or self.full_dataset is None:
+            return None
         
-        # Or if you need to query from the main dataset:
-        # return self.main_dataset[self.main_dataset['Driver'] == row['Driver']]
+        driver_name = row.get('driver_name') or row.get('Driver')
+        cutoff_season = row.get('cutoff_season', 2024)
+        cutoff_race = row.get('cutoff_race', 999)  # Use high number if not specified
         
-        return None
+        if not driver_name:
+            return None
+        
+        # Get all races for this driver up to the cutoff point
+        driver_races = self.full_dataset[
+            (self.full_dataset['Driver'] == driver_name) &
+            (
+                (self.full_dataset['Season'] < cutoff_season) |
+                (
+                    (self.full_dataset['Season'] == cutoff_season) &
+                    (self.full_dataset['Race'] < cutoff_race)
+                )
+            )
+        ].copy()
+        
+        # Sort chronologically
+        driver_races = driver_races.sort_values(['Season', 'Race'])
+        
+        # Clean up the data - handle missing values
+        driver_races['Start'] = pd.to_numeric(driver_races['Start'], errors='coerce')
+        driver_races['Finish'] = pd.to_numeric(driver_races['Finish'], errors='coerce')
+        
+        # Filter out races with missing finish positions (can't use for training)
+        driver_races = driver_races.dropna(subset=['Finish'])
+        
+        return driver_races if len(driver_races) >= 5 else None
     
     def predict(self, race_history: pd.DataFrame, track_type: str = 'intermediate', 
                 starting_position: Optional[int] = None) -> Dict:
@@ -375,7 +456,73 @@ class FinishPositionPredictor:
         
         return predictor
     
-    def get_model_info(self) -> Dict:
+    def _classify_track_type(self, track_name: str, track_length: float) -> str:
+        """
+        Classify track type based on name and length using NASCAR data
+        """
+        if pd.isna(track_name):
+            track_name = ""
+        if pd.isna(track_length):
+            track_length = 1.5
+            
+        track_name = str(track_name).lower()
+        
+        # Road courses - check name first
+        road_keywords = ['road', 'glen', 'sonoma', 'cota', 'roval', 'mexico city']
+        if any(keyword in track_name for keyword in road_keywords):
+            return 'road'
+        
+        # Superspeedways - 2.0+ miles or specific tracks
+        superspeedway_tracks = ['daytona', 'talladega']
+        if track_length >= 2.0 or any(name in track_name for name in superspeedway_tracks):
+            return 'superspeedway'
+        
+        # Short tracks - under 1.0 mile
+        if track_length < 1.0:
+            return 'short'
+        
+        # Everything else is intermediate (1.0 - 2.0 miles)
+        return 'intermediate'
+    
+    def predict_for_driver(self, cup_series_df: pd.DataFrame, driver_name: str, 
+                          next_track_name: str = None, next_track_length: float = 1.5) -> Dict:
+        """
+        Make a prediction for a specific driver using their NASCAR history
+        
+        Args:
+            cup_series_df: Full NASCAR Cup Series DataFrame
+            driver_name: Name of driver to predict for
+            next_track_name: Name of next track (for track type classification)
+            next_track_length: Length of next track in miles
+            
+        Returns:
+            Dictionary with prediction results
+        """
+        if not self.is_trained:
+            raise ValueError("Model must be trained before making predictions")
+        
+        # Get driver's race history
+        driver_races = cup_series_df[
+            cup_series_df['Driver'] == driver_name
+        ].copy()
+        
+        if driver_races.empty:
+            raise ValueError(f"No data found for driver: {driver_name}")
+        
+        # Clean and sort the data
+        driver_races['Start'] = pd.to_numeric(driver_races['Start'], errors='coerce')
+        driver_races['Finish'] = pd.to_numeric(driver_races['Finish'], errors='coerce')
+        driver_races = driver_races.dropna(subset=['Finish'])
+        driver_races = driver_races.sort_values(['Season', 'Race'])
+        
+        if len(driver_races) < 5:
+            raise ValueError(f"Insufficient race history for {driver_name} ({len(driver_races)} races)")
+        
+        # Classify track type for next race
+        track_type = self._classify_track_type(next_track_name, next_track_length)
+        
+        # Make prediction using the existing predict method
+        return self.predict(driver_races, track_type)
         """Get model information"""
         return {
             'name': 'Finishing Position Predictor',
@@ -387,23 +534,46 @@ class FinishPositionPredictor:
         }
 
 
-# Example usage and testing
+# Example usage with NASCAR data
 if __name__ == "__main__":
-    # Example of how to use the model
+    # Example of how to use the model with your NASCAR CSV data
+    
+    # Load the NASCAR data
+    # df = pd.read_csv('data/raw/cup_series.csv')
+    
+    # Create and train the predictor
     predictor = FinishPositionPredictor()
     
-    # Create sample data for testing
+    # Train the model (this would use the actual data)
+    # training_results = predictor.train(df)
+    # print("Training results:", training_results)
+    
+    # Make predictions for specific drivers
+    # prediction = predictor.predict_for_driver(
+    #     df, 
+    #     driver_name="Kyle Larson",
+    #     next_track_name="Charlotte Motor Speedway", 
+    #     next_track_length=1.5
+    # )
+    # print("Kyle Larson prediction:", prediction)
+    
+    # Create sample data for testing the structure
     sample_history = pd.DataFrame({
         'Season': [2024] * 10,
         'Race': range(1, 11),
         'Finish': [12, 8, 15, 5, 22, 9, 18, 3, 11, 7],
         'Start': [15, 12, 20, 8, 25, 14, 22, 6, 16, 10],
-        'Track': ['Charlotte'] * 10,
-        'Length': [1.5] * 10
+        'Track': ['Charlotte Motor Speedway'] * 10,
+        'Length': [1.5] * 10,
+        'Driver': ['Test Driver'] * 10
     })
     
-    print("Sample prediction:")
-    print("Features:", predictor.prepare_features(sample_history, 'intermediate'))
+    print("Sample prediction with test data:")
+    try:
+        features = predictor.prepare_features(sample_history, 'intermediate')
+        print("Features extracted:", dict(zip(predictor.feature_names, features)))
+    except Exception as e:
+        print("Error:", str(e))
     
     print("\nModel info:")
     print(predictor.get_model_info())
