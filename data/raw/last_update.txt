@@ -1,3 +1,8 @@
-NASCAR data updated: 2025-08-05 12:08:19.916018 
+NASCAR data updated: 2025-08-06 17:23:17.738263 
 Total records: 99645 
 Seasons: 1949 - 2025
+
+Track data cleaning applied: 2025-08-06 17:23:20.470739
+Records processed: 99,645
+Original format: PARQUET
+Backup created: cup_series_original_backup_20250806_172317.parquet
