@@ -55,6 +55,8 @@ def export_drivers_data() -> Dict[str, Any]:
     
     # Get driver career summaries
     driver_seasons = data_loader.driver_seasons
+
+    print("Available columns:", driver_seasons.columns.tolist())
     
     # Create driver profiles
     drivers = []
@@ -62,18 +64,22 @@ def export_drivers_data() -> Dict[str, Any]:
         'Season': ['min', 'max', 'count'],
         'wins': 'sum',
         'avg_finish': 'mean',
-        'top_5_rate': 'mean',
-        'top_10_rate': 'mean',
-        'win_rate': 'mean',
+        'top_5s': 'sum',
+        'top_10s': 'sum',
         'races_run': 'sum'
     }).round(3)
     
     # Flatten column names
     driver_careers.columns = [
         'first_season', 'last_season', 'total_seasons',
-        'total_wins', 'career_avg_finish', 'career_top5_rate',
-        'career_top10_rate', 'career_win_rate', 'total_races'
+        'total_wins', 'career_avg_finish', 'total_top5s',
+        'total_top10s', 'total_races'
     ]
+
+    # Calculate the correct career win rate after aggregation
+    driver_careers['career_win_rate'] = (driver_careers['total_wins'] / driver_careers['total_races']).round(3)
+    driver_careers['career_top5_rate'] = (driver_careers['total_top5s'] / driver_careers['total_races']).round(3)
+    driver_careers['career_top10_rate'] = (driver_careers['total_top10s'] / driver_careers['total_races']).round(3)
     
     for driver_name, stats in driver_careers.iterrows():
         # Skip drivers with very short careers for API efficiency
